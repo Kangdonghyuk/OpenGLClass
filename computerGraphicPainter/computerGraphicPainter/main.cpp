@@ -82,8 +82,14 @@ void MyMouseClick(int button, int state, int x, int y) {
 }
 
 void MyMouseMove(int x, int y) {
+    y = 500 - y;
     if(isDrawing) {
-        lineStripList[lineStripList.size() - 1]->AddWayPosition(x, 500-y);
+        if(x >= 450 && y >= 350) {
+            isDrawing = false;
+            return ;
+        }
+        
+        lineStripList[lineStripList.size() - 1]->AddWayPosition(x, y);
         glutPostRedisplay();
     }
 }
@@ -92,22 +98,16 @@ int main(int argc, char * argv[]) {
     glutInit(&argc, argv);
     
     glutInitDisplayMode(GLUT_RGBA);
-    
     glutInitWindowSize(500, 500);
     glutInitWindowPosition(200, 200);
     glutCreateWindow("Painter");
     glClearColor(1, 1, 1, 0);
-    
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0, 500, 0, 500, 0, 500);
-    
     glutMouseFunc(MyMouseClick);
     glutMotionFunc(MyMouseMove);
-    
     glutDisplayFunc(MyDisplay);
-    
     glutMainLoop();
-    
     return 0;
 }

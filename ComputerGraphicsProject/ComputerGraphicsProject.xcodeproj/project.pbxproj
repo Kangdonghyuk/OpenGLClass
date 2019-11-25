@@ -1,0 +1,282 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		ADA6BD87238690B0005424D6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADA6BD86238690B0005424D6 /* main.cpp */; };
+		ADA6BD8F238690BA005424D6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA6BD8E238690BA005424D6 /* OpenGL.framework */; };
+		ADA6BD91238690BE005424D6 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA6BD90238690BE005424D6 /* GLUT.framework */; };
+		ADA6BD9423869140005424D6 /* GLManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADA6BD9223869140005424D6 /* GLManager.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		ADA6BD81238690B0005424D6 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		AD123764238BE9CB0001A4B5 /* VoxelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoxelData.h; sourceTree = "<group>"; };
+		ADA6BD83238690B0005424D6 /* ComputerGraphicsProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ComputerGraphicsProject; sourceTree = BUILT_PRODUCTS_DIR; };
+		ADA6BD86238690B0005424D6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		ADA6BD8E238690BA005424D6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		ADA6BD90238690BE005424D6 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		ADA6BD9223869140005424D6 /* GLManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLManager.cpp; sourceTree = "<group>"; };
+		ADA6BD9323869140005424D6 /* GLManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLManager.hpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		ADA6BD80238690B0005424D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ADA6BD91238690BE005424D6 /* GLUT.framework in Frameworks */,
+				ADA6BD8F238690BA005424D6 /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		ADA6BD7A238690AF005424D6 = {
+			isa = PBXGroup;
+			children = (
+				ADA6BD85238690B0005424D6 /* ComputerGraphicsProject */,
+				ADA6BD84238690B0005424D6 /* Products */,
+				ADA6BD8D238690BA005424D6 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		ADA6BD84238690B0005424D6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ADA6BD83238690B0005424D6 /* ComputerGraphicsProject */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ADA6BD85238690B0005424D6 /* ComputerGraphicsProject */ = {
+			isa = PBXGroup;
+			children = (
+				ADA6BD86238690B0005424D6 /* main.cpp */,
+				ADA6BD9223869140005424D6 /* GLManager.cpp */,
+				ADA6BD9323869140005424D6 /* GLManager.hpp */,
+				AD123764238BE9CB0001A4B5 /* VoxelData.h */,
+			);
+			path = ComputerGraphicsProject;
+			sourceTree = "<group>";
+		};
+		ADA6BD8D238690BA005424D6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ADA6BD90238690BE005424D6 /* GLUT.framework */,
+				ADA6BD8E238690BA005424D6 /* OpenGL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		ADA6BD82238690B0005424D6 /* ComputerGraphicsProject */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ADA6BD8A238690B0005424D6 /* Build configuration list for PBXNativeTarget "ComputerGraphicsProject" */;
+			buildPhases = (
+				ADA6BD7F238690B0005424D6 /* Sources */,
+				ADA6BD80238690B0005424D6 /* Frameworks */,
+				ADA6BD81238690B0005424D6 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ComputerGraphicsProject;
+			productName = ComputerGraphicsProject;
+			productReference = ADA6BD83238690B0005424D6 /* ComputerGraphicsProject */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ADA6BD7B238690AF005424D6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = Liunx;
+				TargetAttributes = {
+					ADA6BD82238690B0005424D6 = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = ADA6BD7E238690AF005424D6 /* Build configuration list for PBXProject "ComputerGraphicsProject" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = ADA6BD7A238690AF005424D6;
+			productRefGroup = ADA6BD84238690B0005424D6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				ADA6BD82238690B0005424D6 /* ComputerGraphicsProject */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		ADA6BD7F238690B0005424D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ADA6BD9423869140005424D6 /* GLManager.cpp in Sources */,
+				ADA6BD87238690B0005424D6 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		ADA6BD88238690B0005424D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		ADA6BD89238690B0005424D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		ADA6BD8B238690B0005424D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		ADA6BD8C238690B0005424D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		ADA6BD7E238690AF005424D6 /* Build configuration list for PBXProject "ComputerGraphicsProject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ADA6BD88238690B0005424D6 /* Debug */,
+				ADA6BD89238690B0005424D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ADA6BD8A238690B0005424D6 /* Build configuration list for PBXNativeTarget "ComputerGraphicsProject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ADA6BD8B238690B0005424D6 /* Debug */,
+				ADA6BD8C238690B0005424D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ADA6BD7B238690AF005424D6 /* Project object */;
+}

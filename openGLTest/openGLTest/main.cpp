@@ -12,77 +12,75 @@
 #include <OpenGL/glu.h>
 #include <math.h>
 
-void Init() {
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-2, 2, -2, 2, 0.5, 5);
+void MyLightInit() {
+    GLfloat light0_ambient[] = {0.5, 0.4, 0.3, 1.0};
+    GLfloat light0_diffuse[] = {0.5, 0.4, 0.3, 1.0};
+    GLfloat light0_specular[] = {1.0, 1.0, 1.0, 1.0};
     
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-}
-
-void Draw() {
-    glColor3f(0.7, 0.7, 0.7);
-    glBegin(GL_QUADS);
-    glVertex3f(2, 0, 2);
-    glVertex3f(2, 0, -2);
-    glVertex3f(-2, 0, -2);
-    glVertex3f(-2, 0, 2);
-    glEnd();
-    glColor3f(1, 0, 0);
-    glutWireTeapot(1);
+    GLfloat material_ambient[] = {0.3, 0.3, 0.3, 1.0};
+    GLfloat material_diffuse[] = {0.3, 0.3, 0.3, 1};
+    GLfloat material_specular[] = {0, 1, 0, 1};
+    GLfloat material_shininess[] = {40.0};
+    
+    glShadeModel(GL_SMOOTH);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    
+    glLightfv(GL_LIGHT0, GL_AMBIENT, light0_ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light0_specular);
+    
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, material_diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, material_ambient);
+    glMaterialfv(GL_FRONT, GL_SHININESS, material_shininess);
+    
+    /*GLint n;
+    glGetIntegerv(GL_MAX_LIGHTS, &n);
+    printf("n = %d\n", n);*/
 }
 
 void MyDisplay(void) {
-    glClear(GL_COLOR_BUFFER_BIT);
+    GLfloat lightPosition[] = {0, 0, 2, 1};
+    //GLfloat lightPosition[] = {0, 2, 2, 1};
+    //GLfloat lightPosition[] = {2, 2, 2, 1};
     
-    glViewport(0, 0, 250, 250);
-    glPushMatrix();
-    Init();
-    gluLookAt(0, 0, 1, 0, 0, 0, 0, 1, 0);
-    Draw();
-    glPopMatrix();
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    
-    glViewport(250, 0, 250, 250);
-    glPushMatrix();
-    Init();
-    gluLookAt(1, 0, 0, 0, 0, 0, 0, 1, 0);
-    Draw();
-    glPopMatrix();
-    
-    
-    glViewport(0, 250, 250, 250);
-    glPushMatrix();
-    Init();
-    gluLookAt(0, 1, 0, 0, 0, 0, 0, 0, -1);
-    Draw();
-    glPopMatrix();
-
-    
-    glViewport(250, 250, 250, 250);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(30, 1, 3, 50);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(5, 5, 5, 0, 0, 0, 0, 1, 0);
-    Draw();
-
+    
+    //glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    gluLookAt(0.5, 0.5, 0.5, 0, 0, -1, 0, 1, 0);
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    
+    glColor3f(1, 0, 0);
+   // glTranslatef(0.3, 0.3, -0.5);
+    glutSolidTorus(0.3, 0.6, 800, 800);
     
     glFlush();
+}
+
+void MyReshape(int w, int h) {
+    glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1, 1, -1, 1, -1, 1);
 }
 
 int main(int argc, char * argv[]) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
-    glutInitWindowSize(500, 500);
+    glutInitWindowSize(400, 400);
     glutInitWindowPosition(0, 0);
     
     glutCreateWindow("OpenGl Exampel Drawing");
-    glClearColor(1, 1, 1, 1);
+    glClearColor(0, 0, 0, 0);
     
+    MyLightInit();
     glutDisplayFunc(MyDisplay);
+    glutReshapeFunc(MyReshape);
+    
     glutMainLoop();
     
     return 0;

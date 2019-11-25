@@ -39,28 +39,25 @@ void GLManager::Init(int * argc, char * argv[]) {
 void GLManager::Rendering() {
     glViewport(0, 0, 600, 600);
     
+    glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     glColor3f(1, 0, 0);
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(0, 0.0, 5, 0, 0.0, 0, 0.0, 1.0, 0.0);
     
-    /*glBegin(GL_POINTS);
-     
-     for(int i=0; i<vertexList.size(); i++)
-     glVertex2f(vertexList[i].x, vertexList[i].y);
-     
-     glEnd();*/
     
-    //glutSolidCube(0.5);
+    float _x = cosf(ly);
+    float _z = sinf(ly);
+
+    gluLookAt(lx, 0.0, lz, lx + _z, 0.0, lz - _x, 0.0, 1.0, 0.0);
     
     glPushMatrix();
     
-    glRotated(ly, 0, 1, 0);
-    glTranslated(-lx, 0, -lz);
-    glScaled(0.2, 0.2, 0.2);
+    //glRotated(ly, 0, 1, 0);
+    //glTranslated(-lx, 0, -lz);
+    //glScaled(0.2, 0.2, 0.2);
     
     for(int z=0; z < 10; z++) {
         for(int y=0; y<10; y++) {
@@ -113,10 +110,10 @@ void GLManager::CBKeyboard(unsigned char key, int x, int y) {
         lx += 0.3;
     }
     else if(key == 'q') {
-        ly -= 0.3;
+        ly -= 0.1;
     }
     else if(key == 'e') {
-        ly += 0.3;
+        ly += 0.1;
     }
 }
 

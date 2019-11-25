@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <vector>
 #include <unistd.h>
+#include <cmath>
 
 #include <GLUT/GLUT.h>
 #include <OpenGL/gl.h>

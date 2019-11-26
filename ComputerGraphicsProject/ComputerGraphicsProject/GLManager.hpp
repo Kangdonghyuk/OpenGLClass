@@ -20,18 +20,12 @@
 #include <OpenGL/glu.h>
 
 #include "VoxelData.h"
-
-#endif /* GLManager_hpp */
-
-typedef struct VERTEX {
-    float x, y;
-}Vertex;
+#include "Camera.hpp"
 
 typedef void (*FuncPtr)(void);
 
 class GLManager {
 public:
-    static std::vector<Vertex> vertexList;
     static std::vector<FuncPtr> funcList;
 public:
     static void Init(int * argc, char * argv[]);
@@ -41,8 +35,9 @@ public:
     static void CBIdle();
     static void CBKeyboard(unsigned char key, int x, int y);
 public:
-    static void AddVertex(Vertex newVertex);
     static void AddCBFunc(FuncPtr ptr);
 };
 
 extern GLManager glMNG;
+
+#endif /* GLManager_hpp */

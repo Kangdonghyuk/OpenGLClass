@@ -9,8 +9,20 @@
 #ifndef VoxelData_hpp
 #define VoxelData_hpp
 
+#include <cmath>
+
 typedef struct Position {
     float x, y, z;
+    float Size() {
+        return sqrtf(x*x + z*z);
+    }
+    Position Nomalize() {
+        Position _nor;
+        float _size = Size();
+        _nor.x = x / _size;
+        _nor.z = z / _size;
+        return _nor;
+    }
 }Pos;
 
 typedef struct COLOR {

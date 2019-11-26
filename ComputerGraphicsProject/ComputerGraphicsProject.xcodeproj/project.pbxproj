@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD123768238D2AB90001A4B5 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AD123766238D2AB90001A4B5 /* Camera.cpp */; };
 		ADA6BD87238690B0005424D6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADA6BD86238690B0005424D6 /* main.cpp */; };
 		ADA6BD8F238690BA005424D6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA6BD8E238690BA005424D6 /* OpenGL.framework */; };
 		ADA6BD91238690BE005424D6 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA6BD90238690BE005424D6 /* GLUT.framework */; };
@@ -27,6 +28,8 @@
 
 /* Begin PBXFileReference section */
 		AD123764238BE9CB0001A4B5 /* VoxelData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoxelData.h; sourceTree = "<group>"; };
+		AD123766238D2AB90001A4B5 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		AD123767238D2AB90001A4B5 /* Camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
 		ADA6BD83238690B0005424D6 /* ComputerGraphicsProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ComputerGraphicsProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADA6BD86238690B0005424D6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		ADA6BD8E238690BA005424D6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -72,6 +75,8 @@
 				ADA6BD9223869140005424D6 /* GLManager.cpp */,
 				ADA6BD9323869140005424D6 /* GLManager.hpp */,
 				AD123764238BE9CB0001A4B5 /* VoxelData.h */,
+				AD123766238D2AB90001A4B5 /* Camera.cpp */,
+				AD123767238D2AB90001A4B5 /* Camera.hpp */,
 			);
 			path = ComputerGraphicsProject;
 			sourceTree = "<group>";
@@ -143,6 +148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ADA6BD9423869140005424D6 /* GLManager.cpp in Sources */,
+				AD123768238D2AB90001A4B5 /* Camera.cpp in Sources */,
 				ADA6BD87238690B0005424D6 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

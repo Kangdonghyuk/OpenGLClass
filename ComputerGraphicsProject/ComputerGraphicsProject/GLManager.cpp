@@ -10,12 +10,13 @@
 
 using namespace std;
 
-vector<Vertex> GLManager::vertexList;
 vector<FuncPtr> GLManager::funcList;
 
-float lz = 5;
+float lz = 0;
 float lx = 0;
 float ly = 0;
+
+Camera cam;
 
 void GLManager::Init(int * argc, char * argv[]) {
     glutInit(argc, argv);
@@ -29,12 +30,27 @@ void GLManager::Init(int * argc, char * argv[]) {
     
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(60, 1, 1, 20.0);
+    gluPerspective(60, 1, 1, 50.0);
     
     glutIdleFunc(CBIdle);
     glutKeyboardFunc(CBKeyboard);
     glutDisplayFunc(Rendering);
+}
+void DrawVoxel(int x, int y, int z) {
+    glPushMatrix();
     
+    glTranslated(x-15, y-5, -z + 15);
+    
+    for(int i=5; i>=0; i--) {
+        glColor4f(voxelColor[i].r, voxelColor[i].g, voxelColor[i].b, voxelColor[i].a);
+        glBegin(GL_QUADS);
+        for(int j=0; j<4; j++) {
+            glVertex3f(voxelPos[voxelIndex[i][j]].x, voxelPos[voxelIndex[i][j]].y, voxelPos[voxelIndex[i][j]].z);
+        }
+        glEnd();
+    }
+    
+    glPopMatrix();
 }
 void GLManager::Rendering() {
     glViewport(0, 0, 600, 600);
@@ -48,10 +64,12 @@ void GLManager::Rendering() {
     glLoadIdentity();
     
     
-    float _x = cosf(ly);
-    float _z = sinf(ly);
-
-    gluLookAt(lx, 0.0, lz, lx + _z, 0.0, lz - _x, 0.0, 1.0, 0.0);
+    float _z = cosf(ly);
+    float _x = sinf(ly);
+    
+    printf("%f : %f \n", _x, _z);
+    
+    gluLookAt(lx, 0.0, lz, lx + _x, 0.0, lz - _z, 0.0, 1.0, 0.0);
     
     glPushMatrix();
     
@@ -59,26 +77,18 @@ void GLManager::Rendering() {
     //glTranslated(-lx, 0, -lz);
     //glScaled(0.2, 0.2, 0.2);
     
-    for(int z=0; z < 10; z++) {
-        for(int y=0; y<10; y++) {
-            for(int x = 0; x < 10; x++) {
-                
-                glPushMatrix();
-                
-                glTranslated((x-5) * 1.2, z-10, -z);
-                
-                for(int i=5; i>=0; i--) {
-                    glColor4f(voxelColor[i].r, voxelColor[i].g, voxelColor[i].b, voxelColor[i].a);
-                    glBegin(GL_QUADS);
-                    for(int j=0; j<4; j++) {
-                        glVertex3f(voxelPos[voxelIndex[i][j]].x, voxelPos[voxelIndex[i][j]].y, voxelPos[voxelIndex[i][j]].z);
-                    }
-                    glEnd();
-                }
-                
-                
-                glPopMatrix();
+    for(int z=0; z < 30; z++) {
+        for(int x = 0; x < 30; x++) {
+            DrawVoxel(x, 0, z);
+            if(z == 0 || z == 29) {
+                for(int y=0; y<10; y++)
+                    DrawVoxel(x, y, z);
             }
+            else if(x == 0 || x == 29) {
+                for(int y=0; y<10; y++)
+                    DrawVoxel(x, y, z);
+            }
+            
         }
     }
     
@@ -97,17 +107,28 @@ void GLManager::CBIdle() {
     glutPostRedisplay();
 }
 void GLManager::CBKeyboard(unsigned char key, int x, int y) {
+    float _z = cosf(ly);
+    float _x = sinf(ly);
+    
     if(key == 'w') {
-        lz -= 0.3;
+        //forceZ = -1;
+        lz -= _z;
+        lx += _x;
     }
     else if(key == 's') {
-        lz += 0.3;
+        //forceZ = 1;
+        lz += _z;
+        lx -= _x;
     }
     else if(key == 'a') {
-        lx -= 0.3;
+        //forceX = -1;
+        lz -= _x;
+        lx -= _z;
     }
     else if(key == 'd') {
-        lx += 0.3;
+        //forceX = 1;
+        lz += _x;
+        lx += _z;
     }
     else if(key == 'q') {
         ly -= 0.1;
@@ -115,14 +136,9 @@ void GLManager::CBKeyboard(unsigned char key, int x, int y) {
     else if(key == 'e') {
         ly += 0.1;
     }
-}
-
-void GLManager::AddVertex(Vertex newVertex) {
-    vertexList.push_back(newVertex);
     
-    if(vertexList.size() >= 10) {
-        vertexList.erase(vertexList.begin());
-    }
+    //lz += forceZ * _x;
+    //lx += forceX * _z;
 }
 
 void GLManager::AddCBFunc(FuncPtr ptr) {

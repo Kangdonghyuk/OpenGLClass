@@ -19,21 +19,14 @@ class Camera {
 public:
     Position position;
     Position direction;
+    Position look;
 public:
-    Camera() {
-        position.x = 0;
-        position.y = 0;
-        position.z = 0;
-        
-        direction.x = 0;
-        direction.y = 0;
-        direction.z = 1;
-    }
+    Camera();
 public:
-    void Translate(Position pos);
+    void Translate(Position pos, bool _isVertical);
     void Rotate(Position rot);
 };
 
-extern Camera cam;
+static Camera cam;
 
 #endif /* Camera_hpp */

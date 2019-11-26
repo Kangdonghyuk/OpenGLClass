@@ -12,11 +12,7 @@ using namespace std;
 
 vector<FuncPtr> GLManager::funcList;
 
-float lz = 0;
-float lx = 0;
-float ly = 0;
-
-Camera cam;
+//Camera cam;
 
 void GLManager::Init(int * argc, char * argv[]) {
     glutInit(argc, argv);
@@ -35,11 +31,13 @@ void GLManager::Init(int * argc, char * argv[]) {
     glutIdleFunc(CBIdle);
     glutKeyboardFunc(CBKeyboard);
     glutDisplayFunc(Rendering);
+    
+    world.Init();
 }
 void DrawVoxel(int x, int y, int z) {
     glPushMatrix();
     
-    glTranslated(x-15, y-5, -z + 15);
+    glTranslated(x, y, -z);
     
     for(int i=5; i>=0; i--) {
         glColor4f(voxelColor[i].r, voxelColor[i].g, voxelColor[i].b, voxelColor[i].a);
@@ -63,34 +61,27 @@ void GLManager::Rendering() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-    
-    float _z = cosf(ly);
-    float _x = sinf(ly);
-    
-    printf("%f : %f \n", _x, _z);
-    
-    gluLookAt(lx, 0.0, lz, lx + _x, 0.0, lz - _z, 0.0, 1.0, 0.0);
+    gluLookAt(cam.position.x, cam.position.y, cam.position.z,
+              cam.position.x + cam.look.x, cam.position.y - cam.look.y, cam.position.z - cam.look.z,
+              0.0, 1.0, 0.0);
     
     glPushMatrix();
     
-    //glRotated(ly, 0, 1, 0);
-    //glTranslated(-lx, 0, -lz);
-    //glScaled(0.2, 0.2, 0.2);
-    
-    for(int z=0; z < 30; z++) {
-        for(int x = 0; x < 30; x++) {
-            DrawVoxel(x, 0, z);
-            if(z == 0 || z == 29) {
-                for(int y=0; y<10; y++)
+    for(int z=0; z < SizeZ; z++) {
+        for(int x = 0; x < SizeX; x++) {
+            for(int y = 0; y < SizeY; y++) {
+                if((abs(cam.position.x - x) >= 20) && (abs(cam.position.z - z) >= 20))
+                    continue;
+                
+                if(world.ck[z][x][y] == 1) {
                     DrawVoxel(x, y, z);
+                }
             }
-            else if(x == 0 || x == 29) {
-                for(int y=0; y<10; y++)
-                    DrawVoxel(x, y, z);
-            }
-            
         }
     }
+    DrawVoxel(0, 0, 0);
+    
+    //DrawVoxel(15, 5, 15);
     
     glPopMatrix();
     
@@ -107,38 +98,31 @@ void GLManager::CBIdle() {
     glutPostRedisplay();
 }
 void GLManager::CBKeyboard(unsigned char key, int x, int y) {
-    float _z = cosf(ly);
-    float _x = sinf(ly);
-    
     if(key == 'w') {
-        //forceZ = -1;
-        lz -= _z;
-        lx += _x;
+        cam.Translate({0, 0, -1}, true);
     }
     else if(key == 's') {
-        //forceZ = 1;
-        lz += _z;
-        lx -= _x;
+        cam.Translate({0, 0, 1}, true);
     }
     else if(key == 'a') {
-        //forceX = -1;
-        lz -= _x;
-        lx -= _z;
+        cam.Translate({-1, 0, 0}, false);
     }
     else if(key == 'd') {
-        //forceX = 1;
-        lz += _x;
-        lx += _z;
+        cam.Translate({1, 0, 0}, false);
     }
+    /*else if(key == 'q') {
+     cam.Translate({-1, 0, -1}, true);
+     }
+     else if(key == 'e') {
+     cam.Translate({1, 0, -1}, true);
+     }*/
     else if(key == 'q') {
-        ly -= 0.1;
+        cam.Rotate({0, -0.1, 0});
     }
     else if(key == 'e') {
-        ly += 0.1;
+        cam.Rotate({0, 0.1, 0});
     }
     
-    //lz += forceZ * _x;
-    //lx += forceX * _z;
 }
 
 void GLManager::AddCBFunc(FuncPtr ptr) {

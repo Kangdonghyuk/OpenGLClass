@@ -21,6 +21,8 @@
 
 #include "VoxelData.h"
 #include "Camera.hpp"
+#include "WorldData.hpp"
+//#include "PerlinNoise.hpp"
 
 typedef void (*FuncPtr)(void);
 
@@ -38,6 +40,6 @@ public:
     static void AddCBFunc(FuncPtr ptr);
 };
 
-extern GLManager glMNG;
+static GLManager glMNG;
 
 #endif /* GLManager_hpp */

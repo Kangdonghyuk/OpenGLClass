@@ -11,25 +11,27 @@
 
 #include <cmath>
 
-typedef struct Position {
+typedef struct POSITION {
     float x, y, z;
     float Size() {
         return sqrtf(x*x + z*z);
     }
-    Position Nomalize() {
-        Position _nor;
+    POSITION Nomalize() {
+        POSITION _nor;
         float _size = Size();
         _nor.x = x / _size;
         _nor.z = z / _size;
         return _nor;
     }
-}Pos;
+}Position;
+
+static Position PositionZero = {0, 0, 0};
 
 typedef struct COLOR {
     float r, g, b, a;
 }Color;
 
-const Pos voxelPos[8] = {
+const Position voxelPos[8] = {
     {-0.5f, -0.5f, 0.5f},
     {0.5f, -0.5f, 0.5f},
     {0.5f, 0.5f, 0.5f},

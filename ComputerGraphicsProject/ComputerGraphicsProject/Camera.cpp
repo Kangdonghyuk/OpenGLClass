@@ -9,14 +9,33 @@
 #include "Camera.hpp"
 #include <cmath>
 
-void Camera::Translate(Position _pos) {
-    float _rad = acosf(_pos.Nomalize().z);
-    Position _dir = {sinf(_rad), 0, cosf(_rad)};
+Camera::Camera() {
+    position = PositionZero;
+    position.y = 15;
     
-    position.x += _dir.x;
-    position.z -= _dir.z;
+    direction = PositionZero;
+    
+    look = PositionZero;
+    look.z = 1;
+}
+
+void Camera::Translate(Position _pos, bool _isVertical) {
+    _pos = _pos.Nomalize();
+    if(_isVertical) {
+        position.x += look.x * -_pos.z;
+        position.z += look.z * _pos.z;
+        
+        position.x += look.z * _pos.x;
+    }
+    else {
+        position.x += look.z * _pos.x;
+        position.z += look.x * _pos.x;
+    }
 }
 void Camera::Rotate(Position _rot) {
-    direction.x = sinf(direction.x + _rot.x);
-    direction.y = cosf(direction.y + _rot.y);
+    direction.x += _rot.y;
+    direction.z += _rot.y;
+    
+    look.x = sinf(direction.x);
+    look.z = cosf(direction.z);
 }

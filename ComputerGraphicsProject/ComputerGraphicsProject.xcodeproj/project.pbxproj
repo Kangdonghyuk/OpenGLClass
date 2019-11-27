@@ -10,6 +10,7 @@
 		AD123768238D2AB90001A4B5 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AD123766238D2AB90001A4B5 /* Camera.cpp */; };
 		AD12376B238D572B0001A4B5 /* PerlinNoise.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AD123769238D572B0001A4B5 /* PerlinNoise.cpp */; };
 		AD12376E238D5C590001A4B5 /* WorldData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AD12376C238D5C590001A4B5 /* WorldData.cpp */; };
+		AD123771238E2C2E0001A4B5 /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AD12376F238E2C2E0001A4B5 /* Input.cpp */; };
 		ADA6BD87238690B0005424D6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADA6BD86238690B0005424D6 /* main.cpp */; };
 		ADA6BD8F238690BA005424D6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA6BD8E238690BA005424D6 /* OpenGL.framework */; };
 		ADA6BD91238690BE005424D6 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA6BD90238690BE005424D6 /* GLUT.framework */; };
@@ -36,6 +37,8 @@
 		AD12376A238D572B0001A4B5 /* PerlinNoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PerlinNoise.hpp; sourceTree = "<group>"; };
 		AD12376C238D5C590001A4B5 /* WorldData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldData.cpp; sourceTree = "<group>"; };
 		AD12376D238D5C590001A4B5 /* WorldData.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorldData.hpp; sourceTree = "<group>"; };
+		AD12376F238E2C2E0001A4B5 /* Input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Input.cpp; sourceTree = "<group>"; };
+		AD123770238E2C2E0001A4B5 /* Input.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Input.hpp; sourceTree = "<group>"; };
 		ADA6BD83238690B0005424D6 /* ComputerGraphicsProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ComputerGraphicsProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADA6BD86238690B0005424D6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		ADA6BD8E238690BA005424D6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -87,6 +90,8 @@
 				AD12376A238D572B0001A4B5 /* PerlinNoise.hpp */,
 				AD12376C238D5C590001A4B5 /* WorldData.cpp */,
 				AD12376D238D5C590001A4B5 /* WorldData.hpp */,
+				AD12376F238E2C2E0001A4B5 /* Input.cpp */,
+				AD123770238E2C2E0001A4B5 /* Input.hpp */,
 			);
 			path = ComputerGraphicsProject;
 			sourceTree = "<group>";
@@ -157,6 +162,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD123771238E2C2E0001A4B5 /* Input.cpp in Sources */,
 				AD12376B238D572B0001A4B5 /* PerlinNoise.cpp in Sources */,
 				AD12376E238D5C590001A4B5 /* WorldData.cpp in Sources */,
 				ADA6BD9423869140005424D6 /* GLManager.cpp in Sources */,

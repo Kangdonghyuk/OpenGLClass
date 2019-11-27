@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ComputerGraphicsProject/GLManager.hpp"
-            timestampString = "596467866.136124"
+            timestampString = "596532042.661742"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "46"
@@ -24,11 +24,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ComputerGraphicsProject/GLManager.hpp"
-            timestampString = "596467866.136124"
+            timestampString = "596531360.058989"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "32"
-            endingLineNumber = "32"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
             landmarkName = "class GLManager"
             landmarkType = "3">
          </BreakpointContent>

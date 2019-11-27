@@ -12,7 +12,8 @@ using namespace std;
 
 vector<FuncPtr> GLManager::funcList;
 
-//Camera cam;
+Camera cam;
+World world;
 
 void GLManager::Init(int * argc, char * argv[]) {
     glutInit(argc, argv);
@@ -26,10 +27,13 @@ void GLManager::Init(int * argc, char * argv[]) {
     
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(60, 1, 1, 50.0);
+    gluPerspective(60, 1, 0.1, 50.0);
     
     glutIdleFunc(CBIdle);
-    glutKeyboardFunc(CBKeyboard);
+    glutKeyboardFunc(input.SetKeyDown);
+    glutSpecialFunc(input.SetSpecialKeyDown);
+    glutKeyboardUpFunc(input.SetKeyUp);
+    glutSpecialUpFunc(input.SetSpecialKeyUp);
     glutDisplayFunc(Rendering);
     
     world.Init();
@@ -70,7 +74,7 @@ void GLManager::Rendering() {
     for(int z=0; z < SizeZ; z++) {
         for(int x = 0; x < SizeX; x++) {
             for(int y = 0; y < SizeY; y++) {
-                if((abs(cam.position.x - x) >= 20) && (abs(cam.position.z - z) >= 20))
+                if((abs(cam.position.x - x) >= 20) || (abs(-cam.position.z - z) >= 20))
                     continue;
                 
                 if(world.ck[z][x][y] == 1) {
@@ -79,9 +83,6 @@ void GLManager::Rendering() {
             }
         }
     }
-    DrawVoxel(0, 0, 0);
-    
-    //DrawVoxel(15, 5, 15);
     
     glPopMatrix();
     
@@ -91,38 +92,34 @@ void GLManager::Loop() {
     glutMainLoop();
 }
 void GLManager::CBIdle() {
+    cam.Gravity();
+    
+    if(input.GetKey(KeyType::w) == KeyState::stay)
+        cam.Translate({0, 0, -1}, true);
+    if(input.GetKey(KeyType::s) == KeyState::stay)
+        cam.Translate({0, 0, 1}, true);
+    if(input.GetKey(KeyType::a) == KeyState::stay)
+        cam.Translate({-1, 0, 0}, false);
+    if(input.GetKey(KeyType::d) == KeyState::stay)
+        cam.Translate({1, 0, 0}, false);
+    if(input.GetKey(KeyType::space) == KeyState::down)
+        cam.Jump();
+    if(input.GetKey(KeyType::leftArrow) == KeyState::stay)
+        cam.Rotate({0, -0.03, 0});
+    if(input.GetKey(KeyType::rightArrow) == KeyState::stay)
+        cam.Rotate({0, 0.03, 0});
+    if(input.GetKey(KeyType::upArrow) == KeyState::stay)
+        cam.Rotate({-0.03, 0, 0});
+    if(input.GetKey(KeyType::downArrow) == KeyState::stay)
+        cam.Rotate({0.03, 0, 0});
+    
     for(int i=0; i<funcList.size(); i++) {
         funcList[i]();
     }
     
-    glutPostRedisplay();
-}
-void GLManager::CBKeyboard(unsigned char key, int x, int y) {
-    if(key == 'w') {
-        cam.Translate({0, 0, -1}, true);
-    }
-    else if(key == 's') {
-        cam.Translate({0, 0, 1}, true);
-    }
-    else if(key == 'a') {
-        cam.Translate({-1, 0, 0}, false);
-    }
-    else if(key == 'd') {
-        cam.Translate({1, 0, 0}, false);
-    }
-    /*else if(key == 'q') {
-     cam.Translate({-1, 0, -1}, true);
-     }
-     else if(key == 'e') {
-     cam.Translate({1, 0, -1}, true);
-     }*/
-    else if(key == 'q') {
-        cam.Rotate({0, -0.1, 0});
-    }
-    else if(key == 'e') {
-        cam.Rotate({0, 0.1, 0});
-    }
+    input.KeyUpdate();
     
+    glutPostRedisplay();
 }
 
 void GLManager::AddCBFunc(FuncPtr ptr) {

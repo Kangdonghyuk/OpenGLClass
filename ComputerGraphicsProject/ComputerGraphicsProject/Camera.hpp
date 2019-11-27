@@ -21,12 +21,17 @@ public:
     Position direction;
     Position look;
 public:
+    Position velocity;
+public:
     Camera();
 public:
     void Translate(Position pos, bool _isVertical);
     void Rotate(Position rot);
+public:
+    void Gravity();
+    void Jump();
 };
 
-static Camera cam;
+extern Camera cam;
 
 #endif /* Camera_hpp */

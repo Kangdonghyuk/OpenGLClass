@@ -8,7 +8,7 @@
 
 #include "GLManager.hpp"
 
-//GLManager glMNG;
+GLManager glMNG;
 
 int main(int argc, char * argv[]) {
     glMNG.Init(&argc, argv);

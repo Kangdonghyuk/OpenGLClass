@@ -23,6 +23,6 @@ public:
     void Init();
 };
 
-static World world;
+extern World world;
 
 #endif /* WorldData_hpp */

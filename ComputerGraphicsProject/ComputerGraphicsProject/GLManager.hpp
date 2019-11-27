@@ -22,6 +22,7 @@
 #include "VoxelData.h"
 #include "Camera.hpp"
 #include "WorldData.hpp"
+#include "Input.hpp"
 //#include "PerlinNoise.hpp"
 
 typedef void (*FuncPtr)(void);
@@ -35,11 +36,10 @@ public:
     static void Loop();
 public:
     static void CBIdle();
-    static void CBKeyboard(unsigned char key, int x, int y);
 public:
     static void AddCBFunc(FuncPtr ptr);
 };
 
-static GLManager glMNG;
+extern GLManager glMNG;
 
 #endif /* GLManager_hpp */

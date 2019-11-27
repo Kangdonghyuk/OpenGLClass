@@ -59,10 +59,10 @@ void Camera::Translate(Position _pos, bool _isVertical) {
     _offsetZ[1] = (_z - (int)_z >= 0.5) ? _z+1 : _z-1;
 
     
-    if(world.ck[-_offsetZ[0]][_offsetX[0]][(int)position.y] == 1 ||
-       world.ck[-_offsetZ[0]][_offsetX[1]][(int)position.y] == 1 ||
-       world.ck[-_offsetZ[1]][_offsetX[0]][(int)position.y] == 1 ||
-       world.ck[-_offsetZ[1]][_offsetX[1]][(int)position.y] == 1) {
+    if(world.ck[-_offsetZ[0]][_offsetX[0]][(int)position.y].type == 1 ||
+       world.ck[-_offsetZ[0]][_offsetX[1]][(int)position.y].type == 1 ||
+       world.ck[-_offsetZ[1]][_offsetX[0]][(int)position.y].type == 1 ||
+       world.ck[-_offsetZ[1]][_offsetX[1]][(int)position.y].type == 1) {
         velocity.x = 0;
         velocity.z = 0;
     }
@@ -98,11 +98,19 @@ void Camera::Gravity() {
     velocity.y -= 0.0098;
     
     if(velocity.y < 0 &&
-       (world.ck[-_offsetZ[0]][_offsetX[0]][(int)position.y - 1] == 1 ||
-        world.ck[-_offsetZ[0]][_offsetX[1]][(int)position.y - 1] == 1 ||
-        world.ck[-_offsetZ[1]][_offsetX[0]][(int)position.y - 1] == 1 ||
-        world.ck[-_offsetZ[1]][_offsetX[1]][(int)position.y - 1] == 1)) {
+       (world.ck[-_offsetZ[0]][_offsetX[0]][(int)position.y - 1].type == 1 ||
+        world.ck[-_offsetZ[0]][_offsetX[1]][(int)position.y - 1].type == 1 ||
+        world.ck[-_offsetZ[1]][_offsetX[0]][(int)position.y - 1].type == 1 ||
+        world.ck[-_offsetZ[1]][_offsetX[1]][(int)position.y - 1].type == 1)) {
         velocity.y = 0;
+    }
+    
+    if(velocity.y > 0 &&
+       (world.ck[-_offsetZ[0]][_offsetX[0]][(int)position.y + 1].type == 1 ||
+        world.ck[-_offsetZ[0]][_offsetX[1]][(int)position.y + 1].type == 1 ||
+        world.ck[-_offsetZ[1]][_offsetX[0]][(int)position.y + 1].type == 1 ||
+        world.ck[-_offsetZ[1]][_offsetX[1]][(int)position.y + 1].type == 1)) {
+           velocity.y = 0;
     }
     
     position.y += velocity.y;

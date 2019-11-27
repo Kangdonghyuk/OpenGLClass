@@ -82,7 +82,7 @@ void GLManager::Rendering() {
                 if((abs(cam.position.x - x) >= 20) || (abs(-cam.position.z - z) >= 20))
                     continue;
                 
-                if(world.ck[z][x][y] == 1) {
+                if(world.ck[z][x][y].type == 1 && world.ck[z][x][y].visual) {
                     DrawVoxel(x, y, z);
                 }
             }
@@ -96,15 +96,7 @@ void GLManager::Rendering() {
 void GLManager::Loop() {
     glutMainLoop();
 }
-bool IsValidPos(int x, int y, int z) {
-    if(x < 0 || x >= SizeX)
-        return false;
-    if(y < 0 || y >= SizeY)
-        return false;
-    if(z < 0 || z >= SizeZ)
-        return false;
-    return true;
-}
+
 void GLManager::CBIdle() {
     cam.Gravity();
     
@@ -136,16 +128,35 @@ void GLManager::CBIdle() {
             int _x = (int)round(cam.position.x - 0.5 + cam.look.x * i);
             int _y = (int)round(cam.position.y - 0.5 - cam.look.y * i);
             int _z = (int)round(cam.position.z - cam.look.z * i);
-            if(IsValidPos(_x, _y, -_z)) {
-                int data = world.ck[-_z][_x][_y];
-                printf("%d : %d : %d = %d \n", _x, _y, -_z, data);
-                if(data == 1) {
-                    world.ck[-_z][_x][_y] = 0;
+            if(world.IsValidPos(_x, _y, -_z)) {
+                int data = world.ck[-_z][_x][_y].type;
+                if(data == 1 && world.ck[-_z][_x][_y].visual) {
+                    //world.ck[-_z][_x][_y].type = 0;
+                    //world.ck[-_z][_x][_y].visual = false;
+                    world.Remove(_x, _y, -_z);
                     break;
                 }
             }
         }
     }
+    if(input.GetKey(KeyType::t) == InputState::down) {
+        for(int i=1; i<5; i++) {
+            int _x = (int)round(cam.position.x - 0.5 + cam.look.x * i);
+            int _y = (int)round(cam.position.y - 0.5 - cam.look.y * i);
+            int _z = (int)round(cam.position.z - cam.look.z * i);
+            if(world.IsValidPos(_x, _y, -_z)) {
+                int data = world.ck[-_z][_x][_y].type;
+                if(data == 1 && world.ck[-_z][_x][_y].visual) {
+                    _x = (int)round(cam.position.x - 0.5 + cam.look.x * (i-1));
+                    _y = (int)round(cam.position.y - 0.5 - cam.look.y * (i-1));
+                    _z = (int)round(cam.position.z - cam.look.z * (i-1));
+                    world.Add(_x, _y, -_z, 1);
+                    break;
+                }
+            }
+        }
+    }
+
     
     for(int i=0; i<funcList.size(); i++) {
         funcList[i]();

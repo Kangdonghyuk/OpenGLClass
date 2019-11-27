@@ -18,7 +18,7 @@ typedef struct CHUNKDATA {
     bool visual;
 }ChunkData;
 
-typedef int Chunk[SizeZ][SizeX][SizeY];
+typedef ChunkData Chunk[SizeZ][SizeX][SizeY];
 
 class World {
 public:
@@ -26,6 +26,10 @@ public:
 public:
     World();
     void Init();
+    void Remove(int x, int y, int z);
+    void VisualAround(int x, int y, int z);
+    bool IsValidPos(int x, int y, int z);
+    void Add(int x, int y, int z, int type);
 };
 
 extern World world;

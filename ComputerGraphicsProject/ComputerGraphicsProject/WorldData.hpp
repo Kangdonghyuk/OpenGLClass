@@ -13,6 +13,11 @@
 #define SizeY 50
 #define SizeZ 100
 
+typedef struct CHUNKDATA {
+    int type;
+    bool visual;
+}ChunkData;
+
 typedef int Chunk[SizeZ][SizeX][SizeY];
 
 class World {

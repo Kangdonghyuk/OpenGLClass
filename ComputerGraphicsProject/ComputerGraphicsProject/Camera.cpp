@@ -14,8 +14,8 @@
 
 Camera::Camera() {
     position = PositionZero;
-    position.y = 15;
     position.x = 10;
+    position.y = 15;
     position.z = -10;
     
     direction = PositionZero;
@@ -75,6 +75,9 @@ void Camera::Rotate(Position _rot) {
     direction.z += _rot.y;
     direction.y += _rot.x;
     
+    if(direction.y < -1 || direction.y > 1)
+        direction.y -= _rot.x;
+    
     look.y = tanf(direction.y);
     look.x = sinf(direction.x);
     look.z = cosf(direction.z);
@@ -88,7 +91,7 @@ void Camera::Gravity() {
     
     _offsetX[0] = (int)_x;
     _offsetX[1] = (_x - (int)_x >= 0.5) ? _x+1 : _x-1;
-    
+     
     _offsetZ[0] = (int)_z;
     _offsetZ[1] = (_z - (int)_z >= 0.5) ? _z+1 : _z-1;
 

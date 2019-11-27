@@ -8,47 +8,90 @@
 
 #include "Input.hpp"
 
-KeyState Input::keyState[KeyType::size];
+InputState Input::keyState[KeyType::size];
+Position Input::mousePosition;
+InputState Input::mouseState[MouseType::_size];
+Position Input::mouseChangeRate;
+Position Input::mousePrevPosition;
 
-void Input::KeyUpdate() {
+void Input::InputUpdate() {
     for(int i=0; i<KeyType::size; i++) {
-        if(keyState[i] == none)
+        if(keyState[i] == InputState::none)
             continue;
-        else if(keyState[i] == KeyState::down)
-            keyState[i] = KeyState::stay;
-        else if(keyState[i] == KeyState::up)
-            keyState[i] = KeyState::none;
+        else if(keyState[i] == InputState::down)
+            keyState[i] = InputState::stay;
+        else if(keyState[i] == InputState::up)
+            keyState[i] = InputState::none;
     }
+    
+    for(int i=0; i<MouseType::_size; i++) {
+        if(mouseState[i] == InputState::none)
+            continue;
+        else if(mouseState[i] == InputState::down)
+            mouseState[i] = InputState::stay;
+        else if(mouseState[i] == InputState::up)
+            mouseState[i] = InputState::none;
+    }
+    
+    mousePrevPosition = mousePosition;
 }
 
 void Input::SetKeyDown(unsigned char key, int x, int y) {
     if(key >= 'a' && key <= 'z')
-        keyState[key - 'a'] = KeyState::down;
+        keyState[key - 'a'] = InputState::down;
     else if(key >= '0' && key <= '9')
-        keyState[key - '0' + KeyType::_0] = KeyState::down;
+        keyState[key - '0' + KeyType::_0] = InputState::down;
     else if(key == 32)
-        keyState[KeyType::space] = KeyState::down;
+        keyState[KeyType::space] = InputState::down;
     else if(key == 27)
-        keyState[KeyType::esc] = KeyState::down;
+        keyState[KeyType::esc] = InputState::down;
 }
 void Input::SetSpecialKeyDown(int key, int x, int y) {
     if(key >= 100 && key <= 103)
-        keyState[key - 100 + KeyType::leftArrow] = KeyState::down;
+        keyState[key - 100 + KeyType::leftArrow] = InputState::down;
 }
 void Input::SetKeyUp(unsigned char key, int x, int y) {
     if(key >= 'a' && key <= 'z')
-        keyState[key - 'a'] = KeyState::up;
+        keyState[key - 'a'] = InputState::up;
     else if(key >= '0' && key <= '9')
-        keyState[key - '0' + KeyType::_0] = KeyState::up;
+        keyState[key - '0' + KeyType::_0] = InputState::up;
     else if(key == 32)
-        keyState[KeyType::space] = KeyState::up;
+        keyState[KeyType::space] = InputState::up;
     else if(key == 27)
-        keyState[KeyType::esc] = KeyState::up;
+        keyState[KeyType::esc] = InputState::up;
 }
 void Input::SetSpecialKeyUp(int key, int x, int y) {
     if(key >= 100 && key <= 103)
-        keyState[key - 100 + KeyType::leftArrow] = KeyState::up;
+        keyState[key - 100 + KeyType::leftArrow] = InputState::up;
 }
-KeyState Input::GetKey(KeyType key) {
+InputState Input::GetKey(KeyType key) {
     return keyState[key];
+}
+
+void Input::SetMousePress(int button, int state, int x, int y) {
+    mouseState[button] = InputState(state + 1);
+    mousePosition.x = x;
+    mousePosition.y = y;
+}
+void Input::SetMouseMove(int x, int y) {
+    mousePosition.x = x;
+    mousePosition.y = y;
+}
+Position Input::GetMousePosition() {
+    return mousePosition;
+}
+Position Input::GetMouseChangeRate() {
+    mouseChangeRate.x = mousePosition.x - mousePrevPosition.x;
+    mouseChangeRate.y = mousePosition.y - mousePrevPosition.y;
+    
+    return mouseChangeRate;
+}
+bool Input::GetMouseDown(MouseType button) {
+    return mouseState[button] == InputState::down;
+}
+bool Input::GetMouseUp(MouseType button) {
+    return mouseState[button] == InputState::up;
+}
+bool Input::GetMouseStay(MouseType button) {
+    return mouseState[button] == InputState::stay;
 }

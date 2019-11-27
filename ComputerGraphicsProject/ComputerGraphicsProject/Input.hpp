@@ -9,6 +9,8 @@
 #ifndef Input_hpp
 #define Input_hpp
 
+#include "VoxelData.h"
+
 enum KeyType {
     a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u,
     v, w, x, y, z,
@@ -17,15 +19,23 @@ enum KeyType {
     ctrl, alt, shift, space, esc, ent, size
 };
 
-enum KeyState {
+enum MouseType {
+    left, middle, right, _size
+};
+
+enum InputState {
     none, down, up, stay
 };
 
 class Input {
 public:
-    static KeyState keyState[KeyType::size];
+    static InputState keyState[KeyType::size];
+    static Position mousePosition;
+    static Position mouseChangeRate;
+    static Position mousePrevPosition;
+    static InputState mouseState[_size];
 public:
-    void KeyUpdate();
+    void InputUpdate();
     static void SetKeyDown(unsigned char key, int x, int y);
     static void SetSpecialKeyDown(int key, int x, int y);
     static void SetKeyUp(unsigned char key, int x, int y);
@@ -34,7 +44,16 @@ public:
     bool GetKeyDown(KeyType key);
     bool GetKeyUp(KeyType key);
     bool GetKeyStay(KeyType key);
-    KeyState GetKey(KeyType key);
+    InputState GetKey(KeyType key);
+public:
+    static void SetMousePress(int button, int state, int x, int y);
+    static void SetMouseMove(int x, int y);
+public:
+    Position GetMousePosition();
+    Position GetMouseChangeRate();
+    bool GetMouseDown(MouseType button);
+    bool GetMouseUp(MouseType button);
+    bool GetMouseStay(MouseType button);
 };
 
 static Input input;

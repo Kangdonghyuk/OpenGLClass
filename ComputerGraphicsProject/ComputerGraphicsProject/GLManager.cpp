@@ -15,6 +15,36 @@ vector<FuncPtr> GLManager::funcList;
 Camera cam;
 World world;
 
+void LightInit() {
+    GLfloat globalAmbient[] = {0.1, 0.1, 0.1, 1.0};
+    
+    GLfloat light0Ambient[] = {1, 1, 1, 1.0};
+    GLfloat light0Diffuse[] = {0.5, 0.4, 0.3, 1.0};
+    GLfloat light0Specular[] = {1.0, 1.0, 1.0, 1.0};
+    
+    GLfloat materialAmbient[] = {1, 1, 1, 1.0};
+    GLfloat materialDiffuse[] = {1, 1, 1, 1.0};
+    GLfloat materialSpecular[] = {0.0, 0.0, 1.0, 1,0};
+    GLfloat materialShininess[] = {25};
+    
+    glShadeModel(GL_SMOOTH);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHTING);
+    
+    glEnable(GL_LIGHT1);
+    glLightfv(GL_LIGHT1, GL_AMBIENT, light0Ambient);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, light0Diffuse);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, light0Specular);
+    
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, materialDiffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, materialSpecular);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, materialAmbient);
+    glMaterialfv(GL_FRONT, GL_SHININESS, materialShininess);
+    
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
+    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+}
+
 void GLManager::Init(int * argc, char * argv[]) {
     glutInit(argc, argv);
     
@@ -38,6 +68,8 @@ void GLManager::Init(int * argc, char * argv[]) {
     
     glutMouseFunc(input.SetMousePress);
     glutMotionFunc(input.SetMouseMove);
+    
+    LightInit();
     
     glutDisplayFunc(Rendering);
     
@@ -67,8 +99,12 @@ void GLManager::Rendering() {
     
     glColor3f(1, 0, 0);
     
+    GLfloat lightPosition0[] = {0.0, 1.0, -10.0, 1.0};
+    
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    
+    glLightfv(GL_LIGHT1, GL_POSITION, lightPosition0);
     
     gluLookAt(cam.position.x, cam.position.y, cam.position.z,
               cam.position.x + cam.look.x, cam.position.y - cam.look.y, cam.position.z - cam.look.z,
@@ -156,7 +192,7 @@ void GLManager::CBIdle() {
             }
         }
     }
-
+    
     
     for(int i=0; i<funcList.size(); i++) {
         funcList[i]();

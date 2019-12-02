@@ -23,24 +23,27 @@ Camera::Camera() {
     look = PositionZero;
     look.z = 1;
     
+    moveLook = PositionZero;
+    moveLook.z = 1;
+    
     velocity = PositionZero;
 }
 
 void Camera::Translate(Position _pos, bool _isVertical) {
-    _pos = _pos.Nomalize();
+    _pos = _pos.Normalize();
     
     velocity.x = 0;
     velocity.z = 0;
     
     if(_isVertical) {
-        velocity.x += look.x * -_pos.z;
-        velocity.z += look.z * _pos.z;
+        velocity.x += moveLook.x * -_pos.z;
+        velocity.z += moveLook.z * _pos.z;
         
-        velocity.x += look.z * _pos.x;
+        //velocity.x += look.z * _pos.x;
     }
     else {
-        velocity.x += look.z * _pos.x;
-        velocity.z += look.x * _pos.x;
+        velocity.x += moveLook.z * _pos.x;
+        velocity.z += moveLook.x * _pos.x;
     }
     
     velocity.x  = velocity.x / 10.0f;
@@ -80,12 +83,14 @@ void Camera::Rotate(Position _rot) {
     direction.z += _rot.y;
     direction.y += _rot.x;
     
-    if(direction.y < -1 || direction.y > 1)
+    if(direction.y < -1.5 || direction.y > 1.5)
         direction.y -= _rot.x;
     
-    look.y = tanf(direction.y);
-    look.x = sinf(direction.x);
-    look.z = cosf(direction.z);
+    moveLook.y = tanf(direction.y);
+    moveLook.x = sinf(direction.x);
+    moveLook.z = cosf(direction.z);
+    
+    look = moveLook.AllNormalize();
 }
 void Camera::Gravity() {
     float _x = position.x + velocity.x;

@@ -20,6 +20,7 @@ public:
     Position position;
     Position direction;
     Position look;
+    Position moveLook;
 public:
     Position velocity;
 public:

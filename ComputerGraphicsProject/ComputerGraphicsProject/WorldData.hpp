@@ -26,11 +26,14 @@ public:
 public:
     World();
     void Init();
-    void Remove(int x, int y, int z);
-    void VisualAround(int x, int y, int z);
-    bool IsValidPos(int x, int y, int z);
-    void Add(int x, int y, int z, int type);
+    void Remove(int z, int x, int y);
+    void VisualAround(int z, int x, int y);
+    bool IsValidPos(int z, int x, int y);
+    void Add(int z, int x, int y, int type);
     int GetData(int z, int x, int y);
+    int GetDataAround(float * z, float * x, float * y);
+    bool IsInnerPos(int z, int x, int y,
+                    float posZ, float posX, float posY);
 };
 
 extern World world;

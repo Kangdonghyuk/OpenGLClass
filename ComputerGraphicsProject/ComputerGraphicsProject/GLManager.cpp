@@ -35,19 +35,11 @@ void LightInit() {
     glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
     glLightfv(GL_LIGHT0, GL_SPECULAR, lightSpecular);
-
+    
     glMaterialfv(GL_FRONT, GL_DIFFUSE, materialDiffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR, materialSpecular);
     glMaterialfv(GL_FRONT, GL_AMBIENT, materialAmbient);
     glMaterialfv(GL_FRONT, GL_SHININESS, materialShininess);
-    
-    /*glMaterialfv(GL_BACK, GL_DIFFUSE, materialDiffuse);
-    glMaterialfv(GL_BACK, GL_SPECULAR, materialSpecular);
-    glMaterialfv(GL_BACK, GL_AMBIENT, materialAmbient);
-    glMaterialfv(GL_BACK, GL_SHININESS, materialShininess);*/
-    
-    //glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
-    //glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 }
 
 void GLManager::Init(int * argc, char * argv[]) {
@@ -73,6 +65,7 @@ void GLManager::Init(int * argc, char * argv[]) {
     
     glutMouseFunc(input.SetMousePress);
     glutMotionFunc(input.SetMouseMove);
+    glutPassiveMotionFunc(input.SetMouseMove);
     
     LightInit();
     
@@ -107,7 +100,7 @@ void DrawVoxel(int x, int y, int z) {
         glColor4f(voxelColor[i].r, voxelColor[i].g, voxelColor[i].b, voxelColor[i].a);
         glBegin(GL_QUADS);
         for(int j=0; j<4; j++) {
-            glVertex3f(voxelPos[voxelIndex[i][j]].x+0.5, voxelPos[voxelIndex[i][j]].y, voxelPos[voxelIndex[i][j]].z-0.5);
+            glVertex3f(voxelPos[voxelIndex[i][j]].x, voxelPos[voxelIndex[i][j]].y, voxelPos[voxelIndex[i][j]].z);
         }
         glEnd();
     }
@@ -115,8 +108,6 @@ void DrawVoxel(int x, int y, int z) {
     glPopMatrix();
 }
 void GLManager::Rendering() {
-    //glViewport(0, 0, 600, 600);
-    
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
@@ -188,22 +179,28 @@ void GLManager::CBIdle() {
         cam.Rotate({-0.03, 0, 0});
     if(input.GetKey(KeyType::downArrow) == InputState::stay)
         cam.Rotate({0.03, 0, 0});
-    if(input.GetMouseStay(MouseType::left)) {
-        cam.Rotate({
-            input.GetMouseChangeRate().y / 100.0f,
-            input.GetMouseChangeRate().x / 100.0f, 0});
-    }
     if(input.GetMouseDown(MouseType::left)) {
-        for(int i=1; i<5; i++) {
-            int _x = (int)round(cam.position.x - 0.5 + cam.look.x * i);
+        for(float i=1.0f; i<4.0f; i+=0.2f) {
+            /*int _x = (int)round(cam.position.x - 0.5 + cam.look.x * i);
             int _y = (int)round(cam.position.y - 0.5 - cam.look.y * i);
             int _z = (int)round(cam.position.z - cam.look.z * i);
-            if(world.IsValidPos(_x, _y, -_z)) {
-                int data = world.GetData(-_z, _x, _y);
-                if(data == 1 && world.ck[-_z][_x][_y].visual) {
-                    world.Remove(_x, _y, -_z);
-                    break;
-                }
+            _z = -_z;*/
+            float _x = cam.position.x + cam.look.x * i;
+            float _y = cam.position.y - cam.look.y * i;
+            float _z = cam.position.z - cam.look.z * i;
+            printf(":: %f %f %f \n", cam.look.x, cam.look.y, cam.look.z);
+            printf("%f %f %f \n", _x, _y, _z);
+            _z = -_z;
+            /*int data = world.GetData(-_z, _x, _y);
+            if(data == 1 && world.ck[-_z][_x][_y].visual) {
+                world.Remove(-_z, _x, _y);
+                break;
+            }*/
+            
+            int data = world.GetDataAround(&_z, &_x, &_y);
+            if(data == 1 && world.ck[(int)_z][(int)_x][(int)_y].visual) {
+                world.Remove((int)_z, (int)_x, (int)_y);
+                break;
             }
         }
     }
@@ -212,15 +209,20 @@ void GLManager::CBIdle() {
             int _x = (int)round(cam.position.x - 0.5 + cam.look.x * i);
             int _y = (int)round(cam.position.y - 0.5 - cam.look.y * i);
             int _z = (int)round(cam.position.z - cam.look.z * i);
-                int data = world.GetData(-_z, _x, _y);
-                if(data == 1 && world.ck[-_z][_x][_y].visual) {
-                    _x = (int)round(cam.position.x - 0.5 + cam.look.x * (i-1));
-                    _y = (int)round(cam.position.y - 0.5 - cam.look.y * (i-1));
-                    _z = (int)round(cam.position.z - cam.look.z * (i-1));
-                    world.Add(_x, _y, -_z, 1);
-                    break;
-                }
+            int data = world.GetData(-_z, _x, _y);
+            if(data == 1 && world.ck[-_z][_x][_y].visual) {
+                _x = (int)round(cam.position.x - 0.5 + cam.look.x * (i-1));
+                _y = (int)round(cam.position.y - 0.5 - cam.look.y * (i-1));
+                _z = (int)round(cam.position.z - cam.look.z * (i-1));
+                world.Add(-_z, _x, _y, 1);
+                break;
+            }
         }
+    }
+    if(input.GetMouseStay(MouseType::left)) {
+        cam.Rotate({
+            input.GetMouseChangeRate().y / 100.0f,
+            input.GetMouseChangeRate().x / 100.0f, 0});
     }
     
     

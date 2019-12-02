@@ -16,10 +16,21 @@ typedef struct POSITION {
     float Size() {
         return sqrtf(x*x + z*z);
     }
-    POSITION Nomalize() {
+    float AllSize() {
+        return sqrtf(x*x + y*y + z*z);
+    }
+    POSITION Normalize() {
         POSITION _nor;
         float _size = Size();
         _nor.x = x / _size;
+        _nor.z = z / _size;
+        return _nor;
+    }
+    POSITION AllNormalize() {
+        POSITION _nor;
+        float _size = AllSize();
+        _nor.x = x / _size;
+        _nor.y = y / _size;
         _nor.z = z / _size;
         return _nor;
     }
@@ -32,14 +43,14 @@ typedef struct COLOR {
 }Color;
 
 const Position voxelPos[8] = {
-    {-0.5f, -0.5f, 0.5f},
-    {0.5f, -0.5f, 0.5f},
-    {0.5f, 0.5f, 0.5f},
-    {-0.5f, 0.5f, 0.5f},
-    {-0.5f, -0.5f, -0.5f},
-    {0.5f, -0.5f, -0.5f},
-    {0.5f, 0.5f, -0.5f},
-    {-0.5f, 0.5f, -0.5f}
+    {0, -0.5f, 0},
+    {1, -0.5f, 0},
+    {1, 0.5f, 0},
+    {0, 0.5f, 0},
+    {0, -0.5f, -1},
+    {1, -0.5f, -1},
+    {1, 0.5f, -1},
+    {0, 0.5f, -1}
 };
 
 enum VOXELFACE {

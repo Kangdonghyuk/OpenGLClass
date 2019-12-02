@@ -135,3 +135,9 @@ void Camera::Gravity() {
 void Camera::Jump() {
     velocity.y = 0.2;
 }
+bool Camera::IsComparePosition(float x, float y, float z) {
+    if(fabs(position.x - x) <= 1 && fabs(position.y - y) <= 1 &&
+       fabs(position.z - z) <= 1)
+        return true;
+    return false;
+}

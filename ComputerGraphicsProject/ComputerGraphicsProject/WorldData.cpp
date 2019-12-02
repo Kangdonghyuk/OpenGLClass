@@ -108,7 +108,8 @@ int World::GetDataAround(float * z, float * x, float * y) {
                 int dz = offsetZ + cZ;
                 
                 if(IsValidPos(dz, dx, dy)) {
-                    if(IsInnerPos(dz, dx, dy, *z, *x, *y)) {
+                    if(IsInnerPos(dz, dx, dy, *z, *x, *y) &&
+                       ck[dz][dx][dy].visual) {
                         *z = dz;
                         *x = dx;
                         *y = dy;

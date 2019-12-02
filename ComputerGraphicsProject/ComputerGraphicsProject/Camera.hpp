@@ -31,6 +31,8 @@ public:
 public:
     void Gravity();
     void Jump();
+public:
+    bool IsComparePosition(float x, float y, float z);
 };
 
 extern Camera cam;

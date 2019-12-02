@@ -180,7 +180,7 @@ void GLManager::CBIdle() {
     if(input.GetKey(KeyType::downArrow) == InputState::stay)
         cam.Rotate({0.03, 0, 0});
     if(input.GetMouseDown(MouseType::left)) {
-        for(float i=1.0f; i<4.0f; i+=0.2f) {
+        for(float i=1.0f; i<5.0f; i+=0.2f) {
             /*int _x = (int)round(cam.position.x - 0.5 + cam.look.x * i);
             int _y = (int)round(cam.position.y - 0.5 - cam.look.y * i);
             int _z = (int)round(cam.position.z - cam.look.z * i);
@@ -188,8 +188,7 @@ void GLManager::CBIdle() {
             float _x = cam.position.x + cam.look.x * i;
             float _y = cam.position.y - cam.look.y * i;
             float _z = cam.position.z - cam.look.z * i;
-            printf(":: %f %f %f \n", cam.look.x, cam.look.y, cam.look.z);
-            printf("%f %f %f \n", _x, _y, _z);
+      
             _z = -_z;
             /*int data = world.GetData(-_z, _x, _y);
             if(data == 1 && world.ck[-_z][_x][_y].visual) {
@@ -205,7 +204,7 @@ void GLManager::CBIdle() {
         }
     }
     if(input.GetKey(KeyType::t) == InputState::down) {
-        for(int i=1; i<5; i++) {
+        /*for(int i=1; i<5; i++) {
             int _x = (int)round(cam.position.x - 0.5 + cam.look.x * i);
             int _y = (int)round(cam.position.y - 0.5 - cam.look.y * i);
             int _z = (int)round(cam.position.z - cam.look.z * i);
@@ -215,6 +214,26 @@ void GLManager::CBIdle() {
                 _y = (int)round(cam.position.y - 0.5 - cam.look.y * (i-1));
                 _z = (int)round(cam.position.z - cam.look.z * (i-1));
                 world.Add(-_z, _x, _y, 1);
+                break;
+            }
+        }*/
+        
+        for(float i=1.0f; i<5.0f; i+=0.2f) {
+            
+            float _x = cam.position.x + cam.look.x * i;
+            float _y = cam.position.y - cam.look.y * i;
+            float _z = cam.position.z - cam.look.z * i;
+            _z = -_z;
+            
+            int data = world.GetDataAround(&_z, &_x, &_y);
+            if(data == 1 && world.ck[(int)_z][(int)_x][(int)_y].visual) {
+                float _x = cam.position.x + cam.look.x * (i-1);
+                float _y = cam.position.y - cam.look.y * (i-1);
+                float _z = cam.position.z - cam.look.z * (i-1);
+                if(cam.IsComparePosition(_x, _y, _z))
+                    break;
+                _z = -_z;
+                world.Add((int)_z, (int)_x, (int)_y, 1);
                 break;
             }
         }

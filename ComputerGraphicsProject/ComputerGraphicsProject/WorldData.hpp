@@ -30,6 +30,7 @@ public:
     void VisualAround(int x, int y, int z);
     bool IsValidPos(int x, int y, int z);
     void Add(int x, int y, int z, int type);
+    int GetData(int z, int x, int y);
 };
 
 extern World world;

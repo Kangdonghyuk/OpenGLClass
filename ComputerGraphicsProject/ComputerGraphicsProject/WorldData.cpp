@@ -76,4 +76,9 @@ void World::Add(int x, int y, int z, int type) {
     ck[z][x][y].visual = true;
 }
 
+int World::GetData(int z, int x, int y) {
+    if(IsValidPos(x, y, z))
+        return ck[z][x][y].type;
+    return -1;
+}
 

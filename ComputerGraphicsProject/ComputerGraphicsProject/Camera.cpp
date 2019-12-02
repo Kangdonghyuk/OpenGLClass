@@ -53,16 +53,21 @@ void Camera::Translate(Position _pos, bool _isVertical) {
     int _offsetZ[2];
     
     _offsetX[0] = (int)_x;
-    _offsetX[1] = (_x - (int)_x >= 0.5) ? _x+1 : _x-1;
+    //_offsetX[1] = (_x - (int)_x >= 0.5) ? _x+1 : _x-1;
+    _offsetX[1] = _offsetX[0];
     
     _offsetZ[0] = (int)_z;
-    _offsetZ[1] = (_z - (int)_z >= 0.5) ? _z+1 : _z-1;
-
+    //_offsetZ[1] = (_z - (int)_z >= 0.5) ? _z+1 : _z-1;
+    _offsetZ[1] = _offsetZ[0];
     
-    if(world.ck[-_offsetZ[0]][_offsetX[0]][(int)position.y].type == 1 ||
-       world.ck[-_offsetZ[0]][_offsetX[1]][(int)position.y].type == 1 ||
-       world.ck[-_offsetZ[1]][_offsetX[0]][(int)position.y].type == 1 ||
-       world.ck[-_offsetZ[1]][_offsetX[1]][(int)position.y].type == 1) {
+    int data[4];
+    data[0] = world.GetData(-_offsetZ[0], _offsetX[0], (int)position.y);
+    data[1] = world.GetData(-_offsetZ[0], _offsetX[1], (int)position.y);
+    data[2] = world.GetData(-_offsetZ[1], _offsetX[0], (int)position.y);
+    data[3] = world.GetData(-_offsetZ[1], _offsetX[1], (int)position.y);
+    
+    
+    if(data[0] == 1 || data[1] == 1 || data[2] == 1 || data[3] == 1) {
         velocity.x = 0;
         velocity.z = 0;
     }
@@ -90,28 +95,35 @@ void Camera::Gravity() {
     int _offsetZ[2];
     
     _offsetX[0] = (int)_x;
-    _offsetX[1] = (_x - (int)_x >= 0.5) ? _x+1 : _x-1;
-     
+    //_offsetX[1] = (_x - (int)_x >= 0.5) ? _x+1 : _x-1;
+    _offsetX[1] = _offsetX[0];
+    
     _offsetZ[0] = (int)_z;
-    _offsetZ[1] = (_z - (int)_z >= 0.5) ? _z+1 : _z-1;
-
+    //_offsetZ[1] = (_z - (int)_z >= 0.5) ? _z+1 : _z-1;
+    _offsetZ[1] = _offsetZ[0];
+    
+    int data[4];
+    data[0] = world.GetData(-_offsetZ[0], _offsetX[0], (int)position.y-1);
+    data[1] = world.GetData(-_offsetZ[0], _offsetX[1], (int)position.y-1);
+    data[2] = world.GetData(-_offsetZ[1], _offsetX[0], (int)position.y-1);
+    data[3] = world.GetData(-_offsetZ[1], _offsetX[1], (int)position.y-1);
+    
     velocity.y -= 0.0098;
     
     if(velocity.y < 0 &&
-       (world.ck[-_offsetZ[0]][_offsetX[0]][(int)position.y - 1].type == 1 ||
-        world.ck[-_offsetZ[0]][_offsetX[1]][(int)position.y - 1].type == 1 ||
-        world.ck[-_offsetZ[1]][_offsetX[0]][(int)position.y - 1].type == 1 ||
-        world.ck[-_offsetZ[1]][_offsetX[1]][(int)position.y - 1].type == 1)) {
-        velocity.y = 0;
-    }
+       (data[0] == 1 || data[1] == 1 || data[2] == 1 || data[3] == 1)) {
+           velocity.y = 0;
+       }
+    
+    data[0] = world.GetData(-_offsetZ[0], _offsetX[0], (int)position.y+1);
+    data[1] = world.GetData(-_offsetZ[0], _offsetX[1], (int)position.y+1);
+    data[2] = world.GetData(-_offsetZ[1], _offsetX[0], (int)position.y+1);
+    data[3] = world.GetData(-_offsetZ[1], _offsetX[1], (int)position.y+1);
     
     if(velocity.y > 0 &&
-       (world.ck[-_offsetZ[0]][_offsetX[0]][(int)position.y + 1].type == 1 ||
-        world.ck[-_offsetZ[0]][_offsetX[1]][(int)position.y + 1].type == 1 ||
-        world.ck[-_offsetZ[1]][_offsetX[0]][(int)position.y + 1].type == 1 ||
-        world.ck[-_offsetZ[1]][_offsetX[1]][(int)position.y + 1].type == 1)) {
+       (data[0] == 1 || data[1] == 1 || data[2] == 1 || data[3] == 1)) {
            velocity.y = 0;
-    }
+       }
     
     position.y += velocity.y;
 }

@@ -15,34 +15,39 @@ vector<FuncPtr> GLManager::funcList;
 Camera cam;
 World world;
 
+static int rots = 0;
+
+GLfloat materialAmbient[] = {0, 0, 0, 1};
+GLfloat materialDiffuse[] = {0, 0, 0, 1};
+GLfloat materialSpecular[] = {0, 0, 0, 1};
+GLfloat materialShininess[] = {100};
+
 void LightInit() {
-    GLfloat globalAmbient[] = {0.1, 0.1, 0.1, 1.0};
-    
-    GLfloat light0Ambient[] = {1, 1, 1, 1.0};
-    GLfloat light0Diffuse[] = {0.5, 0.4, 0.3, 1.0};
-    GLfloat light0Specular[] = {1.0, 1.0, 1.0, 1.0};
-    
-    GLfloat materialAmbient[] = {1, 1, 1, 1.0};
-    GLfloat materialDiffuse[] = {1, 1, 1, 1.0};
-    GLfloat materialSpecular[] = {0.0, 0.0, 1.0, 1,0};
-    GLfloat materialShininess[] = {25};
+    GLfloat lightAmbient[] = {1, 1, 1, 1.0};
+    GLfloat lightDiffuse[] = {1, 1, 1, 1.0};
+    GLfloat lightSpecular[] = {1, 1, 1, 1.0};
     
     glShadeModel(GL_SMOOTH);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
     
-    glEnable(GL_LIGHT1);
-    glLightfv(GL_LIGHT1, GL_AMBIENT, light0Ambient);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, light0Diffuse);
-    glLightfv(GL_LIGHT1, GL_SPECULAR, light0Specular);
-    
+    glEnable(GL_LIGHT0);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, lightSpecular);
+
     glMaterialfv(GL_FRONT, GL_DIFFUSE, materialDiffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR, materialSpecular);
     glMaterialfv(GL_FRONT, GL_AMBIENT, materialAmbient);
     glMaterialfv(GL_FRONT, GL_SHININESS, materialShininess);
     
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
-    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+    /*glMaterialfv(GL_BACK, GL_DIFFUSE, materialDiffuse);
+    glMaterialfv(GL_BACK, GL_SPECULAR, materialSpecular);
+    glMaterialfv(GL_BACK, GL_AMBIENT, materialAmbient);
+    glMaterialfv(GL_BACK, GL_SHININESS, materialShininess);*/
+    
+    //glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
+    //glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 }
 
 void GLManager::Init(int * argc, char * argv[]) {
@@ -81,10 +86,28 @@ void DrawVoxel(int x, int y, int z) {
     glTranslated(x, y, -z);
     
     for(int i=5; i>=0; i--) {
+        
+        materialDiffuse[0] = voxelColor[i].r;
+        materialDiffuse[1] = voxelColor[i].g;
+        materialDiffuse[2] = voxelColor[i].b;
+        
+        materialAmbient[0] = voxelColor[i].r;
+        materialAmbient[1] = voxelColor[i].g;
+        materialAmbient[2] = voxelColor[i].b;
+        
+        materialSpecular[0] = voxelColor[i].r;
+        materialSpecular[1] = voxelColor[i].g;
+        materialSpecular[2] = voxelColor[i].b;
+        
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, materialDiffuse);
+        glMaterialfv(GL_FRONT, GL_SPECULAR, materialSpecular);
+        glMaterialfv(GL_FRONT, GL_AMBIENT, materialAmbient);
+        glMaterialfv(GL_FRONT, GL_SHININESS, materialShininess);
+        
         glColor4f(voxelColor[i].r, voxelColor[i].g, voxelColor[i].b, voxelColor[i].a);
         glBegin(GL_QUADS);
         for(int j=0; j<4; j++) {
-            glVertex3f(voxelPos[voxelIndex[i][j]].x+0.5, voxelPos[voxelIndex[i][j]].y, voxelPos[voxelIndex[i][j]].z);
+            glVertex3f(voxelPos[voxelIndex[i][j]].x+0.5, voxelPos[voxelIndex[i][j]].y, voxelPos[voxelIndex[i][j]].z-0.5);
         }
         glEnd();
     }
@@ -99,12 +122,19 @@ void GLManager::Rendering() {
     
     glColor3f(1, 0, 0);
     
-    GLfloat lightPosition0[] = {0.0, 1.0, -10.0, 1.0};
-    
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-    glLightfv(GL_LIGHT1, GL_POSITION, lightPosition0);
+    GLfloat lightPosition[] = {0, -1, 0, 1};
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    GLfloat lightDir[3];
+    lightDir[0] = 0;
+    lightDir[1] = 0;
+    lightDir[2] = -1;
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDir);
+    GLfloat spotAngle[] = {25.0};
+    glLightfv(GL_LIGHT0, GL_SPOT_CUTOFF, spotAngle);
+    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 2.0);
     
     gluLookAt(cam.position.x, cam.position.y, cam.position.z,
               cam.position.x + cam.look.x, cam.position.y - cam.look.y, cam.position.z - cam.look.z,
@@ -144,6 +174,10 @@ void GLManager::CBIdle() {
         cam.Translate({-1, 0, 0}, false);
     if(input.GetKey(KeyType::d) == InputState::stay)
         cam.Translate({1, 0, 0}, false);
+    if(input.GetKey(KeyType::q) == InputState::stay)
+        rots = (rots + 1) % 360;
+    if(input.GetKey(KeyType::e) == InputState::stay)
+        rots = (rots - 1) % 360;
     if(input.GetKey(KeyType::space) == InputState::down)
         cam.Jump();
     if(input.GetKey(KeyType::leftArrow) == InputState::stay)
@@ -165,10 +199,8 @@ void GLManager::CBIdle() {
             int _y = (int)round(cam.position.y - 0.5 - cam.look.y * i);
             int _z = (int)round(cam.position.z - cam.look.z * i);
             if(world.IsValidPos(_x, _y, -_z)) {
-                int data = world.ck[-_z][_x][_y].type;
+                int data = world.GetData(-_z, _x, _y);
                 if(data == 1 && world.ck[-_z][_x][_y].visual) {
-                    //world.ck[-_z][_x][_y].type = 0;
-                    //world.ck[-_z][_x][_y].visual = false;
                     world.Remove(_x, _y, -_z);
                     break;
                 }
@@ -180,8 +212,7 @@ void GLManager::CBIdle() {
             int _x = (int)round(cam.position.x - 0.5 + cam.look.x * i);
             int _y = (int)round(cam.position.y - 0.5 - cam.look.y * i);
             int _z = (int)round(cam.position.z - cam.look.z * i);
-            if(world.IsValidPos(_x, _y, -_z)) {
-                int data = world.ck[-_z][_x][_y].type;
+                int data = world.GetData(-_z, _x, _y);
                 if(data == 1 && world.ck[-_z][_x][_y].visual) {
                     _x = (int)round(cam.position.x - 0.5 + cam.look.x * (i-1));
                     _y = (int)round(cam.position.y - 0.5 - cam.look.y * (i-1));
@@ -189,7 +220,6 @@ void GLManager::CBIdle() {
                     world.Add(_x, _y, -_z, 1);
                     break;
                 }
-            }
         }
     }
     

@@ -101,6 +101,8 @@ void GLManager::Init(int * argc, char * argv[]) {
     
     LightInit();
     
+    glutSetCursor(GLUT_CURSOR_NONE);
+    glutFullScreen();
     glutDisplayFunc(Rendering);
     
     world.Init();
@@ -268,11 +270,11 @@ void GLManager::CBIdle() {
     if(input.GetKey(KeyType::t) == InputState::down) {
         AddBlock();
     }
-    if(input.GetMouseStay(MouseType::left)) {
+    //if(input.GetMouseStay(MouseType::left)) {
         cam.Rotate({
             input.GetMouseChangeRate().y / 100.0f,
             input.GetMouseChangeRate().x / 100.0f, 0});
-    }
+    //}
     
     
     for(int i=0; i<funcList.size(); i++) {
@@ -297,7 +299,6 @@ void GLManager::RemoveBlock() {
             break;
         }
     }
-
 }
 void GLManager::AddBlock() {
     for(float i=1.0f; i<5.0f; i+=0.2f) {

@@ -17,6 +17,7 @@ Camera cam;
 World world;
 
 static int rots = 0;
+static int selectItem = 0;
 
 GLfloat materialAmbient[] = {1, 1, 1, 1};
 GLfloat materialDiffuse[] = {1, 1, 1, 1};
@@ -25,16 +26,10 @@ GLfloat materialShininess[] = {100};
 
 ////////////////////////
 
-unsigned int MyTextureObject[1];
-unsigned char *data;
-int width;
-int height;
-
 void GLManager::LoadGLTextures() {
     LoadBMP("mineTex.bmp");
     textureList.push_back(new GLTex());
     textureList[textureList.size()-1]->bit = GetBMP("mineTex.bmp");
-    //Bitmap * bit = GetBMP("mineTex.bmp");
     textureList[textureList.size()-1]->bit->SetOffset(16, 16);
     glGenTextures(1, &textureList[textureList.size()-1]->objIndex);
     glBindTexture(GL_TEXTURE_2D, textureList[textureList.size()-1]->objIndex);
@@ -115,21 +110,19 @@ void GLManager::DrawVoxel(int x, int y, int z, int type) {
     
     glTranslated(x, y, -z);
     
-    glBindTexture(GL_TEXTURE_2D, textureList[textureList.size()-1]->objIndex);
-    
     for(int i=0; i<6; i++) {
         
         /*materialDiffuse[0] = voxelColor[i].r;
-        materialDiffuse[1] = voxelColor[i].g;
-        materialDiffuse[2] = voxelColor[i].b;
-        
-        materialAmbient[0] = voxelColor[i].r;
-        materialAmbient[1] = voxelColor[i].g;
-        materialAmbient[2] = voxelColor[i].b;
-        
-        materialSpecular[0] = voxelColor[i].r;
-        materialSpecular[1] = voxelColor[i].g;
-        materialSpecular[2] = voxelColor[i].b;*/
+         materialDiffuse[1] = voxelColor[i].g;
+         materialDiffuse[2] = voxelColor[i].b;
+         
+         materialAmbient[0] = voxelColor[i].r;
+         materialAmbient[1] = voxelColor[i].g;
+         materialAmbient[2] = voxelColor[i].b;
+         
+         materialSpecular[0] = voxelColor[i].r;
+         materialSpecular[1] = voxelColor[i].g;
+         materialSpecular[2] = voxelColor[i].b;*/
         
         glMaterialfv(GL_FRONT, GL_DIFFUSE, materialDiffuse);
         glMaterialfv(GL_FRONT, GL_SPECULAR, materialSpecular);
@@ -139,11 +132,11 @@ void GLManager::DrawVoxel(int x, int y, int z, int type) {
         glColor4f(voxelColor[i].r, voxelColor[i].g, voxelColor[i].b, voxelColor[i].a);
         glBegin(GL_QUADS);
         for(int j=0; j<4; j++) {
-
+            
             glTexCoord2f(
                          textureList[textureList.size()-1]->bit->GetOffsetX(j, voxelTexture[type][i]),
                          textureList[textureList.size()-1]->bit->GetOffsetY(j, voxelTexture[type][i]));
-
+            
             glVertex3f(voxelPos[voxelIndex[i][j]].x, voxelPos[voxelIndex[i][j]].y, voxelPos[voxelIndex[i][j]].z);
         }
         glEnd();
@@ -151,16 +144,56 @@ void GLManager::DrawVoxel(int x, int y, int z, int type) {
     
     glPopMatrix();
 }
+void GLManager::DrawUI() {
+    glDisable(GL_LIGHTING);
+    
+    float uiZPosition = -0.2f;
+    
+    glBegin(GL_LINES);
+    glColor4f(1, 0, 0, 1);
+    glVertex3f(0.01, 0.01, uiZPosition);
+    glVertex3f(-0.01, -0.01, uiZPosition);
+    glVertex3f(-0.01, 0.01, uiZPosition);
+    glVertex3f(0.01, -0.01, uiZPosition);
+    glEnd();
+    
+    int tex[5] = {245, 1, 2, 4, 7};
+    for(int i=0; i<5; i++) {
+        glColor3f(0.6, 0.6, 0.6);
+        if(selectItem == i)
+            glColor3f(1, 1, 1);
+        glBegin(GL_QUADS);
+        glTexCoord2f(
+                     textureList[textureList.size()-1]->bit->GetOffsetX(0, tex[i]),
+                     textureList[textureList.size()-1]->bit->GetOffsetY(0, tex[i]));
+        glVertex3f((i-1) * 0.025, -0.09, uiZPosition);
+        glTexCoord2f(
+                     textureList[textureList.size()-1]->bit->GetOffsetX(1, tex[i]),
+                     textureList[textureList.size()-1]->bit->GetOffsetY(1, tex[i]));
+        glVertex3f((i-2) * 0.025, -0.09, uiZPosition);
+        glTexCoord2f(
+                     textureList[textureList.size()-1]->bit->GetOffsetX(2, tex[i]),
+                     textureList[textureList.size()-1]->bit->GetOffsetY(2, tex[i]));
+        glVertex3f((i-2) * 0.025, -0.11, uiZPosition);
+        glTexCoord2f(
+                     textureList[textureList.size()-1]->bit->GetOffsetX(3, tex[i]),
+                     textureList[textureList.size()-1]->bit->GetOffsetY(3, tex[i]));
+        glVertex3f((i-1) * 0.025, -0.11, uiZPosition);
+        glEnd();
+    }
+    
+    glEnable(GL_LIGHTING);
+}
 void GLManager::Rendering() {
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    glColor3f(1, 0, 0);
+    //glColor3f(1, 0, 0);
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-
+    DrawUI();
     
     gluLookAt(cam.position.x, cam.position.y, cam.position.z,
               cam.position.x + cam.look.x, cam.position.y - cam.look.y, cam.position.z - cam.look.z,
@@ -212,69 +245,28 @@ void GLManager::CBIdle() {
         cam.Rotate({0, -0.03, 0});
     if(input.GetKey(KeyType::rightArrow) == InputState::stay)
         cam.Rotate({0, 0.03, 0});
+    if(input.GetKey(KeyType::_1) == InputState::down)
+        selectItem = 0;
+    if(input.GetKey(KeyType::_2) == InputState::down)
+        selectItem = 1;
+    if(input.GetKey(KeyType::_3) == InputState::down)
+        selectItem = 2;
+    if(input.GetKey(KeyType::_4) == InputState::down)
+        selectItem = 3;
+    if(input.GetKey(KeyType::_5) == InputState::down)
+        selectItem = 4;
     if(input.GetKey(KeyType::upArrow) == InputState::stay)
         cam.Rotate({-0.03, 0, 0});
     if(input.GetKey(KeyType::downArrow) == InputState::stay)
         cam.Rotate({0.03, 0, 0});
     if(input.GetMouseDown(MouseType::left)) {
-        //printf("%f \n", textureList[textureList.size()-1]->bit->GetOffsetX(1, 0));
-        for(float i=1.0f; i<5.0f; i+=0.2f) {
-            /*int _x = (int)round(cam.position.x - 0.5 + cam.look.x * i);
-            int _y = (int)round(cam.position.y - 0.5 - cam.look.y * i);
-            int _z = (int)round(cam.position.z - cam.look.z * i);
-            _z = -_z;*/
-            float _x = cam.position.x + cam.look.x * i;
-            float _y = cam.position.y - cam.look.y * i;
-            float _z = cam.position.z - cam.look.z * i;
-      
-            _z = -_z;
-            /*int data = world.GetData(-_z, _x, _y);
-            if(data == 1 && world.ck[-_z][_x][_y].visual) {
-                world.Remove(-_z, _x, _y);
-                break;
-            }*/
-            
-            int data = world.GetDataAround(&_z, &_x, &_y);
-            if(data != 0 && world.ck[(int)_z][(int)_x][(int)_y].visual) {
-                world.Remove((int)_z, (int)_x, (int)_y);
-                break;
-            }
-        }
+        if(selectItem == 0)
+            RemoveBlock();
+        else
+            AddBlock();
     }
     if(input.GetKey(KeyType::t) == InputState::down) {
-        /*for(int i=1; i<5; i++) {
-            int _x = (int)round(cam.position.x - 0.5 + cam.look.x * i);
-            int _y = (int)round(cam.position.y - 0.5 - cam.look.y * i);
-            int _z = (int)round(cam.position.z - cam.look.z * i);
-            int data = world.GetData(-_z, _x, _y);
-            if(data == 1 && world.ck[-_z][_x][_y].visual) {
-                _x = (int)round(cam.position.x - 0.5 + cam.look.x * (i-1));
-                _y = (int)round(cam.position.y - 0.5 - cam.look.y * (i-1));
-                _z = (int)round(cam.position.z - cam.look.z * (i-1));
-                world.Add(-_z, _x, _y, 1);
-                break;
-            }
-        }*/
-        
-        for(float i=1.0f; i<5.0f; i+=0.2f) {
-            
-            float _x = cam.position.x + cam.look.x * i;
-            float _y = cam.position.y - cam.look.y * i;
-            float _z = cam.position.z - cam.look.z * i;
-            _z = -_z;
-            
-            int data = world.GetDataAround(&_z, &_x, &_y);
-            if(data != 0 && world.ck[(int)_z][(int)_x][(int)_y].visual) {
-                float _x = cam.position.x + cam.look.x * (i-1);
-                float _y = cam.position.y - cam.look.y * (i-1);
-                float _z = cam.position.z - cam.look.z * (i-1);
-                if(cam.IsComparePosition(_x, _y, _z))
-                    break;
-                _z = -_z;
-                world.Add((int)_z, (int)_x, (int)_y, 1);
-                break;
-            }
-        }
+        AddBlock();
     }
     if(input.GetMouseStay(MouseType::left)) {
         cam.Rotate({
@@ -290,6 +282,43 @@ void GLManager::CBIdle() {
     input.InputUpdate();
     
     glutPostRedisplay();
+}
+void GLManager::RemoveBlock() {
+    for(float i=1.0f; i<5.0f; i+=0.2f) {
+        float _x = cam.position.x + cam.look.x * i;
+        float _y = cam.position.y - cam.look.y * i;
+        float _z = cam.position.z - cam.look.z * i;
+        
+        _z = -_z;
+        
+        int data = world.GetDataAround(&_z, &_x, &_y);
+        if(data != 0 && world.ck[(int)_z][(int)_x][(int)_y].visual) {
+            world.Remove((int)_z, (int)_x, (int)_y);
+            break;
+        }
+    }
+
+}
+void GLManager::AddBlock() {
+    for(float i=1.0f; i<5.0f; i+=0.2f) {
+        
+        float _x = cam.position.x + cam.look.x * i;
+        float _y = cam.position.y - cam.look.y * i;
+        float _z = cam.position.z - cam.look.z * i;
+        _z = -_z;
+        
+        int data = world.GetDataAround(&_z, &_x, &_y);
+        if(data != 0 && world.ck[(int)_z][(int)_x][(int)_y].visual) {
+            float _x = cam.position.x + cam.look.x * (i-1);
+            float _y = cam.position.y - cam.look.y * (i-1);
+            float _z = cam.position.z - cam.look.z * (i-1);
+            if(cam.IsComparePosition(_x, _y, _z))
+                break;
+            _z = -_z;
+            world.Add((int)_z, (int)_x, (int)_y, selectItem+1);
+            break;
+        }
+    }
 }
 
 void GLManager::AddCBFunc(FuncPtr ptr) {

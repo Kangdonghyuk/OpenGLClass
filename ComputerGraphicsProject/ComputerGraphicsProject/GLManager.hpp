@@ -42,7 +42,10 @@ public:
     static void Rendering();
     static void Loop();
     static void LightInit();
+    static void DrawUI();
     static void DrawVoxel(int x, int y, int z, int type);
+    static void RemoveBlock();
+    static void AddBlock();
 public:
     static void CBIdle();
 public:

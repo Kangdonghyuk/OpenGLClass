@@ -37,15 +37,15 @@ void World::Init() {
             if(y < 0)
                 y = 0;
             
-            ck[z][x][y].type = 1;
+            ck[z][x][y].type = 6;
             ck[z][x][y].visual = true;
             int downY = y - 1;
             
             while(downY > 0) {
-                if(y - downY < 2)
-                    ck[z][x][downY].type = 2;
+                if(y - downY < 4)
+                    ck[z][x][downY].type = 7;
                 else
-                    ck[z][x][downY].type = 3;
+                    ck[z][x][downY].type = 8;
                 ck[z][x][downY].visual = false;
                 downY -= 1;
             }

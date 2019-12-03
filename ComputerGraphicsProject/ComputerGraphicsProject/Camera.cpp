@@ -52,27 +52,26 @@ void Camera::Translate(Position _pos, bool _isVertical) {
     float _x = position.x + velocity.x;
     float _z = position.z + velocity.z;
     
-    int _offsetX[2];
-    int _offsetZ[2];
+    int data;
     
-    _offsetX[0] = (int)_x;
-    //_offsetX[1] = (_x - (int)_x >= 0.5) ? _x+1 : _x-1;
-    _offsetX[1] = _offsetX[0];
+    data = world.GetData(-(int)_z, (int)_x, (int)position.y);
     
-    _offsetZ[0] = (int)_z;
-    //_offsetZ[1] = (_z - (int)_z >= 0.5) ? _z+1 : _z-1;
-    _offsetZ[1] = _offsetZ[0];
-    
-    int data[4];
-    data[0] = world.GetData(-_offsetZ[0], _offsetX[0], (int)position.y);
-    data[1] = world.GetData(-_offsetZ[0], _offsetX[1], (int)position.y);
-    data[2] = world.GetData(-_offsetZ[1], _offsetX[0], (int)position.y);
-    data[3] = world.GetData(-_offsetZ[1], _offsetX[1], (int)position.y);
-    
-    
-    if(data[0] > 0 || data[1] > 0 || data[2] > 0 || data[3] > 0) {
+    if(data > 0) {
         velocity.x = 0;
         velocity.z = 0;
+    }
+    
+    for(int i = 0; i < 360; i+=45) {
+        data = world.GetData(
+                             (0.3f * cosf(DEGREE_TO_RADIAN(i)) + (-_z)),
+                             (0.3f * sinf(DEGREE_TO_RADIAN(i)) + _x),
+                             (int)position.y);
+        
+        if(data > 0) {
+            velocity.x = 0;
+            velocity.z = 0;
+            break;
+        }
     }
     
     position.x += velocity.x;
@@ -93,42 +92,39 @@ void Camera::Rotate(Position _rot) {
     look = moveLook.AllNormalize();
 }
 void Camera::Gravity() {
-    float _x = position.x + velocity.x;
-    float _z = position.z + velocity.z;
+    //float _x = position.x + velocity.x;
+    //float _z = position.z + velocity.z;
     
-    int _offsetX[2];
-    int _offsetZ[2];
+    float _x = position.x;
+    float _z = position.z;
     
-    _offsetX[0] = (int)_x;
-    //_offsetX[1] = (_x - (int)_x >= 0.5) ? _x+1 : _x-1;
-    _offsetX[1] = _offsetX[0];
+    int data;
     
-    _offsetZ[0] = (int)_z;
-    //_offsetZ[1] = (_z - (int)_z >= 0.5) ? _z+1 : _z-1;
-    _offsetZ[1] = _offsetZ[0];
     
-    int data[4];
-    data[0] = world.GetData(-_offsetZ[0], _offsetX[0], (int)position.y-1);
-    data[1] = world.GetData(-_offsetZ[0], _offsetX[1], (int)position.y-1);
-    data[2] = world.GetData(-_offsetZ[1], _offsetX[0], (int)position.y-1);
-    data[3] = world.GetData(-_offsetZ[1], _offsetX[1], (int)position.y-1);
+    data = world.GetData(-(int)_z, (int)_x, (int)position.y-1);
     
     velocity.y -= 0.0098;
+    if(velocity.y < 0 && data > 0) {
+        velocity.y = 0;
+    }
     
-    if(velocity.y < 0 &&
-       (data[0] > 0 || data[1] > 0 || data[2] > 0 || data[3] > 0)) {
-           velocity.y = 0;
-       }
+    for(int i = 0; i < 360; i+=45) {
+        data = world.GetData(
+                             (0.2f * cosf(DEGREE_TO_RADIAN(i)) + (-_z)),
+                             (0.2f * sinf(DEGREE_TO_RADIAN(i)) + _x),
+                             (int)position.y-1);
+        
+        if(velocity.y < 0 && data > 0) {
+            velocity.y = 0;
+            break;
+        }
+    }
     
-    data[0] = world.GetData(-_offsetZ[0], _offsetX[0], (int)position.y+1);
-    data[1] = world.GetData(-_offsetZ[0], _offsetX[1], (int)position.y+1);
-    data[2] = world.GetData(-_offsetZ[1], _offsetX[0], (int)position.y+1);
-    data[3] = world.GetData(-_offsetZ[1], _offsetX[1], (int)position.y+1);
+    data = world.GetData(-(int)_z, (int)_x, (int)position.y+1);
     
-    if(velocity.y > 0 &&
-       (data[0] > 0 || data[1] > 0 || data[2] > 0 || data[3] > 0)) {
-           velocity.y = 0;
-       }
+    if(velocity.y > 0 && data > 0) {
+        velocity.y = 0;
+    }
     
     position.y += velocity.y;
 }

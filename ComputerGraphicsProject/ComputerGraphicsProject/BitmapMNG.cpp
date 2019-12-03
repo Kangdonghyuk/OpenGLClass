@@ -10,6 +10,8 @@
 
 std::vector<Bitmap*> bitmapList;
 
+
+//비트맵 메타데이터 및 데이터 파일 로드
 void LoadBMP(const char * fileName) {
     FILE * f = fopen(fileName, "rb");
     unsigned char info[54];

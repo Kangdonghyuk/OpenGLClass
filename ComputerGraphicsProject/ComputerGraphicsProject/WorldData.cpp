@@ -12,13 +12,9 @@
 #include <stdio.h>
 #include <cmath>
 
-World::World() {
-   
-}
-
 void World::Init() {
-    //bzero(ck, SizeZ * SizeX * SizeY);
-    
+
+    //맵 초기화
     for(int z=0; z<SizeZ; z++) {
         for(int x=0; x<SizeX; x++) {
             for(int y = 0; y < SizeY; y++) {
@@ -28,19 +24,23 @@ void World::Init() {
         }
     }
     
+    //맵 랜덤 정보 입력
     for(int z=0; z<SizeZ; z++) {
         for(int x=0; x<SizeX; x++) {
             
+            //노이즈 y좌표 높이 설정
             int y = 20 * perlinNoise.noise(
                     (double)x/SizeX, (double)z/SizeZ, 0.8);
             
             if(y < 0)
                 y = 0;
             
+            //y좌표 기본 블럭 입력
             ck[z][x][y].type = 6;
             ck[z][x][y].visual = true;
             int downY = y - 1;
             
+            //y좌표 밑 기타 정보 입력
             while(downY > 0) {
                 if(y - downY < 4)
                     ck[z][x][downY].type = 7;
@@ -114,6 +114,7 @@ int World::GetDataAround(float * z, float * x, float * y) {
     
     int offsetX = *x, offsetY = *y, offsetZ = *z;
     
+    //좌표 주변 검사
     for(int cZ = -1; cZ <= 1; cZ++) {
         for(int cX = -1; cX <= 1; cX++) {
             for(int cY = -1; cY <= 1; cY++) {

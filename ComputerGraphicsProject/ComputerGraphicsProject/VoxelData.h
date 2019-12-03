@@ -11,6 +11,8 @@
 
 #include <cmath>
 
+
+//좌표 구조체
 typedef struct POSITION {
     float x, y, z;
     float Size() {
@@ -36,12 +38,14 @@ typedef struct POSITION {
     }
 }Position;
 
+//기본 좌표 설정
 static Position PositionZero = {0, 0, 0};
 
 typedef struct COLOR {
     float r, g, b, a;
 }Color;
 
+//복셀 기반 정6면체(블럭) 좌표
 const Position voxelPos[8] = {
     {0, -0.5f, 0},
     {1, -0.5f, 0},
@@ -53,6 +57,7 @@ const Position voxelPos[8] = {
     {0, 0.5f, -1}
 };
 
+//블럭 면 방향 정의
 enum VOXELFACE {
     FRONT,
     TOP,
@@ -62,6 +67,7 @@ enum VOXELFACE {
     BEHIND
 };
 
+//각 면 방향에 맞게 좌표 인덱스 정의
 const int voxelIndex[6][4] = {
     {0, 1, 2, 3},
     {3, 2, 6, 7},
@@ -71,6 +77,7 @@ const int voxelIndex[6][4] = {
     {5, 4, 7, 6}
 };
 
+//블럭 타입별 텍스쳐 인덱스 정의
 const int voxelTexture[8][6] = {
     {0, 0, 0, 0, 0, 0},
     {1, 1, 1, 1, 1, 1},

@@ -6,6 +6,11 @@
 //  Copyright © 2019년 Liunx. All rights reserved.
 //
 
+/*
+ 인터넷 소스
+ 연속적인 랜덤 효과 부여 (자연현상 효과)
+ */
+
 #ifndef PerlinNoise_hpp
 #define PerlinNoise_hpp
 

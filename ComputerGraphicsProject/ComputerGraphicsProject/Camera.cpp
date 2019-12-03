@@ -12,6 +12,7 @@
 
 //World world;
 
+//기본 위치 시점 설정
 Camera::Camera() {
     position = PositionZero;
     position.x = 10;
@@ -35,6 +36,7 @@ void Camera::Translate(Position _pos, bool _isVertical) {
     velocity.x = 0;
     velocity.z = 0;
     
+    //앞뒤 이동 좌우 이동 따로 처리
     if(_isVertical) {
         velocity.x += moveLook.x * -_pos.z;
         velocity.z += moveLook.z * _pos.z;
@@ -53,6 +55,8 @@ void Camera::Translate(Position _pos, bool _isVertical) {
     float _z = position.z + velocity.z;
     
     int data;
+    
+    // 블럭 통과 불가하게 맵 정보 확인
     
     data = world.GetData(-(int)_z, (int)_x, (int)position.y);
     
@@ -85,6 +89,8 @@ void Camera::Rotate(Position _rot) {
     if(direction.y < -1.5 || direction.y > 1.5)
         direction.y -= _rot.x;
     
+    //회전 후 삼각함수 이용해 시점 적용
+    
     moveLook.y = tanf(direction.y);
     moveLook.x = sinf(direction.x);
     moveLook.z = cosf(direction.z);
@@ -100,6 +106,7 @@ void Camera::Gravity() {
     
     int data;
     
+    // 중력 적용 바닥 통과 불가하게 맵 정보 확인
     
     data = world.GetData(-(int)_z, (int)_x, (int)position.y-1);
     
@@ -119,6 +126,8 @@ void Camera::Gravity() {
             break;
         }
     }
+    
+    // 점프시 블럭 통과 불가하게 맵 정보 확인
     
     data = world.GetData(-(int)_z, (int)_x, (int)position.y+1);
     

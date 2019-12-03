@@ -16,9 +16,11 @@ vector<GLTex*> GLManager::textureList;
 Camera cam;
 World world;
 
-static int rots = 0;
+//선택 아이템 인덱스 0번일경우 블럭 지우기 모드
 static int selectItem = 0;
 
+
+// 블럭 매트리얼 정보
 GLfloat materialAmbient[] = {1, 1, 1, 1};
 GLfloat materialDiffuse[] = {1, 1, 1, 1};
 GLfloat materialSpecular[] = {1, 1, 1, 1};
@@ -60,6 +62,8 @@ void GLManager::LightInit() {
     glMaterialfv(GL_FRONT, GL_AMBIENT, materialAmbient);
     glMaterialfv(GL_FRONT, GL_SHININESS, materialShininess);
     
+    
+    //조명 스포트라이트 모드 및 시점 고정
     GLfloat lightPosition[] = {0, -1, 0, 1};
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
     GLfloat lightDir[3];
@@ -75,6 +79,7 @@ void GLManager::LightInit() {
 void GLManager::Init(int * argc, char * argv[]) {
     glutInit(argc, argv);
     
+    //더블버퍼링 설정
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(1000, 1000);
     glutInitWindowPosition(0, 0);
@@ -86,10 +91,12 @@ void GLManager::Init(int * argc, char * argv[]) {
     
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+    //원근 투영 설정
     gluPerspective(60, 1, 0.1, 50.0);
     
     glutIdleFunc(CBIdle);
     
+    //입력 콕백 함수 등록
     glutKeyboardFunc(input.SetKeyDown);
     glutSpecialFunc(input.SetSpecialKeyDown);
     glutKeyboardUpFunc(input.SetKeyUp);
@@ -101,8 +108,12 @@ void GLManager::Init(int * argc, char * argv[]) {
     
     LightInit();
     
+    //커서 비활성화
     glutSetCursor(GLUT_CURSOR_NONE);
+    //풀스크린 설정
     glutFullScreen();
+    
+    
     glutDisplayFunc(Rendering);
     
     world.Init();
@@ -229,6 +240,7 @@ void GLManager::Loop() {
 void GLManager::CBIdle() {
     cam.Gravity();
     
+    //각 입력에 따른 이벤트 처리
     if(input.GetKey(KeyType::w) == InputState::stay)
         cam.Translate({0, 0, -1}, true);
     if(input.GetKey(KeyType::s) == InputState::stay)
@@ -237,10 +249,6 @@ void GLManager::CBIdle() {
         cam.Translate({-1, 0, 0}, false);
     if(input.GetKey(KeyType::d) == InputState::stay)
         cam.Translate({1, 0, 0}, false);
-    if(input.GetKey(KeyType::q) == InputState::stay)
-        rots = (rots + 1) % 360;
-    if(input.GetKey(KeyType::e) == InputState::stay)
-        rots = (rots - 1) % 360;
     if(input.GetKey(KeyType::space) == InputState::down)
         cam.Jump();
     if(input.GetKey(KeyType::leftArrow) == InputState::stay)
@@ -271,6 +279,7 @@ void GLManager::CBIdle() {
         AddBlock();
     }
     //if(input.GetMouseStay(MouseType::left)) {
+    //마우스 이동에 따른 시점 변경
         cam.Rotate({
             input.GetMouseChangeRate().y / 100.0f,
             input.GetMouseChangeRate().x / 100.0f, 0});
@@ -285,6 +294,10 @@ void GLManager::CBIdle() {
     
     glutPostRedisplay();
 }
+
+/*
+RemoveBlock, AddBlock 둘 다 기점 기준 일정 거리 모두 체크
+ */
 void GLManager::RemoveBlock() {
     for(float i=1.0f; i<5.0f; i+=0.2f) {
         float _x = cam.position.x + cam.look.x * i;

@@ -7,6 +7,8 @@
 #include <unistd.h>
 #include <math.h>
 
+#include "bmp.hpp"
+
 
 unsigned int MyTextureObject[1];
 unsigned char *data;
@@ -102,6 +104,7 @@ void Idle() {
 int main (int argc, char* argv[])
 {
     char buff[1024];
+    chdir("/Users/liunx/Desktop/backup/computerGraphics/lab/openGLTest/openGLTest/");
     getcwd( buff, 1024);                   // 작업 디렉토리 구하기
     printf( "작업 디렉토리: %sn \n", buff);
     

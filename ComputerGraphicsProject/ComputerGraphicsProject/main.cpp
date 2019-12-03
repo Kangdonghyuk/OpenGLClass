@@ -11,6 +11,9 @@
 GLManager glMNG;
 
 int main(int argc, char * argv[]) {
+    
+    chdir("/Users/liunx/Desktop/backup/computerGraphics/lab/ComputerGraphicsProject/ComputerGraphicsProject/");
+    
     glMNG.Init(&argc, argv);
     
     glMNG.Loop();

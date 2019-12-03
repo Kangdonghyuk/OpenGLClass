@@ -10,6 +10,7 @@
 		AD5C571B2325F2F900B4B923 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AD5C571A2325F2F900B4B923 /* main.cpp */; };
 		AD5C57232325F33D00B4B923 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD5C57222325F33D00B4B923 /* GLUT.framework */; };
 		AD5C57252325F34800B4B923 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD5C57242325F34800B4B923 /* OpenGL.framework */; };
+		ADD32DBB239620A50071B47D /* bmp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADD32DB9239620A50071B47D /* bmp.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,9 +27,11 @@
 
 /* Begin PBXFileReference section */
 		AD5C57172325F2F900B4B923 /* openGLTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = openGLTest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AD5C571A2325F2F900B4B923 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		AD5C571A2325F2F900B4B923 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = openGLTest/main.cpp; sourceTree = SOURCE_ROOT; };
 		AD5C57222325F33D00B4B923 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		AD5C57242325F34800B4B923 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		ADD32DB9239620A50071B47D /* bmp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bmp.cpp; sourceTree = "<group>"; };
+		ADD32DBA239620A50071B47D /* bmp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bmp.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +68,8 @@
 			isa = PBXGroup;
 			children = (
 				AD5C571A2325F2F900B4B923 /* main.cpp */,
+				ADD32DB9239620A50071B47D /* bmp.cpp */,
+				ADD32DBA239620A50071B47D /* bmp.hpp */,
 			);
 			path = openGLTest;
 			sourceTree = "<group>";
@@ -136,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD5C571B2325F2F900B4B923 /* main.cpp in Sources */,
+				ADD32DBB239620A50071B47D /* bmp.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,6 +272,7 @@
 				AD5C57202325F2F900B4B923 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

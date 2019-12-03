@@ -15,6 +15,7 @@
 		ADA6BD8F238690BA005424D6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA6BD8E238690BA005424D6 /* OpenGL.framework */; };
 		ADA6BD91238690BE005424D6 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA6BD90238690BE005424D6 /* GLUT.framework */; };
 		ADA6BD9423869140005424D6 /* GLManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADA6BD9223869140005424D6 /* GLManager.cpp */; };
+		ADE68DE6239549B800FCB905 /* BitmapMNG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADE68DE4239549B800FCB905 /* BitmapMNG.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,6 +46,8 @@
 		ADA6BD90238690BE005424D6 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		ADA6BD9223869140005424D6 /* GLManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLManager.cpp; sourceTree = "<group>"; };
 		ADA6BD9323869140005424D6 /* GLManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GLManager.hpp; sourceTree = "<group>"; };
+		ADE68DE4239549B800FCB905 /* BitmapMNG.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitmapMNG.cpp; sourceTree = "<group>"; };
+		ADE68DE5239549B800FCB905 /* BitmapMNG.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BitmapMNG.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +95,8 @@
 				AD12376D238D5C590001A4B5 /* WorldData.hpp */,
 				AD12376F238E2C2E0001A4B5 /* Input.cpp */,
 				AD123770238E2C2E0001A4B5 /* Input.hpp */,
+				ADE68DE4239549B800FCB905 /* BitmapMNG.cpp */,
+				ADE68DE5239549B800FCB905 /* BitmapMNG.hpp */,
 			);
 			path = ComputerGraphicsProject;
 			sourceTree = "<group>";
@@ -162,6 +167,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ADE68DE6239549B800FCB905 /* BitmapMNG.cpp in Sources */,
 				AD123771238E2C2E0001A4B5 /* Input.cpp in Sources */,
 				AD12376B238D572B0001A4B5 /* PerlinNoise.cpp in Sources */,
 				AD12376E238D5C590001A4B5 /* WorldData.cpp in Sources */,

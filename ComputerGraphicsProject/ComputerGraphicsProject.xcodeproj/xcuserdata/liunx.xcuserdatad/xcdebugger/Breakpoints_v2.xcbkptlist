@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ComputerGraphicsProject/GLManager.hpp"
-            timestampString = "596532042.661742"
+            timestampString = "597045007.0118901"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46">
+            startingLineNumber = "56"
+            endingLineNumber = "56">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -24,13 +24,29 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ComputerGraphicsProject/GLManager.hpp"
-            timestampString = "596531360.058989"
+            timestampString = "597045007.0118901"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
             landmarkName = "class GLManager"
             landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ComputerGraphicsProject/BitmapMNG.hpp"
+            timestampString = "597044617.299248"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "BITMAP"
+            landmarkType = "14">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

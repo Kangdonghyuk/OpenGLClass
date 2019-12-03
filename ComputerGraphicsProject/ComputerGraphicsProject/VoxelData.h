@@ -71,6 +71,12 @@ const int voxelIndex[6][4] = {
     {5, 4, 7, 6}
 };
 
+const int voxelTexture[3][6] = {
+    {3, 146, 2, 3, 3, 3},
+    {2, 2, 2, 2, 2, 2},
+    {1, 1, 1, 1, 1, 1}
+};
+
 const Color voxelColor[6] {
     {1, 0, 0, 1},
     {0, 1, 0, 1},

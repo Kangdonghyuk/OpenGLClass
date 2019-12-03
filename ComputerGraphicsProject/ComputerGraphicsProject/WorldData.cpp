@@ -17,7 +17,17 @@ World::World() {
 }
 
 void World::Init() {
-    bzero(ck, SizeZ * SizeX * SizeY);
+    //bzero(ck, SizeZ * SizeX * SizeY);
+    
+    for(int z=0; z<SizeZ; z++) {
+        for(int x=0; x<SizeX; x++) {
+            for(int y = 0; y < SizeY; y++) {
+                ck[z][x][y].type = 0;
+                ck[z][x][y].visual = false;
+            }
+        }
+    }
+    
     for(int z=0; z<SizeZ; z++) {
         for(int x=0; x<SizeX; x++) {
             
@@ -29,12 +39,15 @@ void World::Init() {
             
             ck[z][x][y].type = 1;
             ck[z][x][y].visual = true;
-            y -= 1;
+            int downY = y - 1;
             
-            while(y > 0) {
-                ck[z][x][y].type = 1;
-                ck[z][x][y].visual = false;
-                y -= 1;
+            while(downY > 0) {
+                if(y - downY < 2)
+                    ck[z][x][downY].type = 2;
+                else
+                    ck[z][x][downY].type = 3;
+                ck[z][x][downY].visual = false;
+                downY -= 1;
             }
         }
     }
@@ -79,7 +92,8 @@ void World::Add(int z, int x, int y, int type) {
 
 int World::GetData(int z, int x, int y) {
     if(IsValidPos(z, x, y))
-        return ck[z][x][y].type;
+        if(ck[z][x][y].visual)
+            return ck[z][x][y].type;
     return -1;
 }
 bool World::IsInnerPos(int z, int x, int y,

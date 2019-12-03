@@ -70,7 +70,7 @@ void Camera::Translate(Position _pos, bool _isVertical) {
     data[3] = world.GetData(-_offsetZ[1], _offsetX[1], (int)position.y);
     
     
-    if(data[0] == 1 || data[1] == 1 || data[2] == 1 || data[3] == 1) {
+    if(data[0] > 0 || data[1] > 0 || data[2] > 0 || data[3] > 0) {
         velocity.x = 0;
         velocity.z = 0;
     }
@@ -116,7 +116,7 @@ void Camera::Gravity() {
     velocity.y -= 0.0098;
     
     if(velocity.y < 0 &&
-       (data[0] == 1 || data[1] == 1 || data[2] == 1 || data[3] == 1)) {
+       (data[0] > 0 || data[1] > 0 || data[2] > 0 || data[3] > 0)) {
            velocity.y = 0;
        }
     
@@ -126,7 +126,7 @@ void Camera::Gravity() {
     data[3] = world.GetData(-_offsetZ[1], _offsetX[1], (int)position.y+1);
     
     if(velocity.y > 0 &&
-       (data[0] == 1 || data[1] == 1 || data[2] == 1 || data[3] == 1)) {
+       (data[0] > 0 || data[1] > 0 || data[2] > 0 || data[3] > 0)) {
            velocity.y = 0;
        }
     

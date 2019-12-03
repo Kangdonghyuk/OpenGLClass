@@ -11,18 +11,42 @@
 using namespace std;
 
 vector<FuncPtr> GLManager::funcList;
+vector<GLTex*> GLManager::textureList;
 
 Camera cam;
 World world;
 
 static int rots = 0;
 
-GLfloat materialAmbient[] = {0, 0, 0, 1};
-GLfloat materialDiffuse[] = {0, 0, 0, 1};
-GLfloat materialSpecular[] = {0, 0, 0, 1};
+GLfloat materialAmbient[] = {1, 1, 1, 1};
+GLfloat materialDiffuse[] = {1, 1, 1, 1};
+GLfloat materialSpecular[] = {1, 1, 1, 1};
 GLfloat materialShininess[] = {100};
 
-void LightInit() {
+////////////////////////
+
+unsigned int MyTextureObject[1];
+unsigned char *data;
+int width;
+int height;
+
+void GLManager::LoadGLTextures() {
+    LoadBMP("mineTex.bmp");
+    textureList.push_back(new GLTex());
+    textureList[textureList.size()-1]->bit = GetBMP("mineTex.bmp");
+    //Bitmap * bit = GetBMP("mineTex.bmp");
+    textureList[textureList.size()-1]->bit->SetOffset(16, 16);
+    glGenTextures(1, &textureList[textureList.size()-1]->objIndex);
+    glBindTexture(GL_TEXTURE_2D, textureList[textureList.size()-1]->objIndex);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, textureList[textureList.size()-1]->bit->width, textureList[textureList.size()-1]->bit->height, 0, GL_RGB, GL_UNSIGNED_BYTE, textureList[textureList.size()-1]->bit->data);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glEnable(GL_TEXTURE_2D);
+}
+
+////////////////////////
+
+void GLManager::LightInit() {
     GLfloat lightAmbient[] = {1, 1, 1, 1.0};
     GLfloat lightDiffuse[] = {1, 1, 1, 1.0};
     GLfloat lightSpecular[] = {1, 1, 1, 1.0};
@@ -40,17 +64,30 @@ void LightInit() {
     glMaterialfv(GL_FRONT, GL_SPECULAR, materialSpecular);
     glMaterialfv(GL_FRONT, GL_AMBIENT, materialAmbient);
     glMaterialfv(GL_FRONT, GL_SHININESS, materialShininess);
+    
+    GLfloat lightPosition[] = {0, -1, 0, 1};
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    GLfloat lightDir[3];
+    lightDir[0] = 0;
+    lightDir[1] = 0;
+    lightDir[2] = -1;
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDir);
+    GLfloat spotAngle[] = {25.0};
+    glLightfv(GL_LIGHT0, GL_SPOT_CUTOFF, spotAngle);
+    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 2.0);
 }
 
 void GLManager::Init(int * argc, char * argv[]) {
     glutInit(argc, argv);
     
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(1000, 1000);
     glutInitWindowPosition(0, 0);
     
     glutCreateWindow("OpenGl Exampel Drawing");
     glClearColor(0, 0, 0, 0);
+    
+    LoadGLTextures();
     
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -73,14 +110,16 @@ void GLManager::Init(int * argc, char * argv[]) {
     
     world.Init();
 }
-void DrawVoxel(int x, int y, int z) {
+void GLManager::DrawVoxel(int x, int y, int z, int type) {
     glPushMatrix();
     
     glTranslated(x, y, -z);
     
-    for(int i=5; i>=0; i--) {
+    glBindTexture(GL_TEXTURE_2D, textureList[textureList.size()-1]->objIndex);
+    
+    for(int i=0; i<6; i++) {
         
-        materialDiffuse[0] = voxelColor[i].r;
+        /*materialDiffuse[0] = voxelColor[i].r;
         materialDiffuse[1] = voxelColor[i].g;
         materialDiffuse[2] = voxelColor[i].b;
         
@@ -90,7 +129,7 @@ void DrawVoxel(int x, int y, int z) {
         
         materialSpecular[0] = voxelColor[i].r;
         materialSpecular[1] = voxelColor[i].g;
-        materialSpecular[2] = voxelColor[i].b;
+        materialSpecular[2] = voxelColor[i].b;*/
         
         glMaterialfv(GL_FRONT, GL_DIFFUSE, materialDiffuse);
         glMaterialfv(GL_FRONT, GL_SPECULAR, materialSpecular);
@@ -100,6 +139,11 @@ void DrawVoxel(int x, int y, int z) {
         glColor4f(voxelColor[i].r, voxelColor[i].g, voxelColor[i].b, voxelColor[i].a);
         glBegin(GL_QUADS);
         for(int j=0; j<4; j++) {
+
+            glTexCoord2f(
+                         textureList[textureList.size()-1]->bit->GetOffsetX(j, voxelTexture[type][i]),
+                         textureList[textureList.size()-1]->bit->GetOffsetY(j, voxelTexture[type][i]));
+
             glVertex3f(voxelPos[voxelIndex[i][j]].x, voxelPos[voxelIndex[i][j]].y, voxelPos[voxelIndex[i][j]].z);
         }
         glEnd();
@@ -116,16 +160,7 @@ void GLManager::Rendering() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-    GLfloat lightPosition[] = {0, -1, 0, 1};
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-    GLfloat lightDir[3];
-    lightDir[0] = 0;
-    lightDir[1] = 0;
-    lightDir[2] = -1;
-    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDir);
-    GLfloat spotAngle[] = {25.0};
-    glLightfv(GL_LIGHT0, GL_SPOT_CUTOFF, spotAngle);
-    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 2.0);
+
     
     gluLookAt(cam.position.x, cam.position.y, cam.position.z,
               cam.position.x + cam.look.x, cam.position.y - cam.look.y, cam.position.z - cam.look.z,
@@ -139,8 +174,8 @@ void GLManager::Rendering() {
                 if((abs(cam.position.x - x) >= 20) || (abs(-cam.position.z - z) >= 20))
                     continue;
                 
-                if(world.ck[z][x][y].type == 1 && world.ck[z][x][y].visual) {
-                    DrawVoxel(x, y, z);
+                if(world.ck[z][x][y].type != 0 && world.ck[z][x][y].visual) {
+                    DrawVoxel(x, y, z, world.ck[z][x][y].type - 1);
                 }
             }
         }
@@ -148,7 +183,9 @@ void GLManager::Rendering() {
     
     glPopMatrix();
     
-    glFlush();
+    //glFlush();
+    
+    glutSwapBuffers();
 }
 void GLManager::Loop() {
     glutMainLoop();
@@ -180,6 +217,7 @@ void GLManager::CBIdle() {
     if(input.GetKey(KeyType::downArrow) == InputState::stay)
         cam.Rotate({0.03, 0, 0});
     if(input.GetMouseDown(MouseType::left)) {
+        //printf("%f \n", textureList[textureList.size()-1]->bit->GetOffsetX(1, 0));
         for(float i=1.0f; i<5.0f; i+=0.2f) {
             /*int _x = (int)round(cam.position.x - 0.5 + cam.look.x * i);
             int _y = (int)round(cam.position.y - 0.5 - cam.look.y * i);
@@ -197,7 +235,7 @@ void GLManager::CBIdle() {
             }*/
             
             int data = world.GetDataAround(&_z, &_x, &_y);
-            if(data == 1 && world.ck[(int)_z][(int)_x][(int)_y].visual) {
+            if(data != 0 && world.ck[(int)_z][(int)_x][(int)_y].visual) {
                 world.Remove((int)_z, (int)_x, (int)_y);
                 break;
             }
@@ -226,7 +264,7 @@ void GLManager::CBIdle() {
             _z = -_z;
             
             int data = world.GetDataAround(&_z, &_x, &_y);
-            if(data == 1 && world.ck[(int)_z][(int)_x][(int)_y].visual) {
+            if(data != 0 && world.ck[(int)_z][(int)_x][(int)_y].visual) {
                 float _x = cam.position.x + cam.look.x * (i-1);
                 float _y = cam.position.y - cam.look.y * (i-1);
                 float _z = cam.position.z - cam.look.z * (i-1);

@@ -12,6 +12,12 @@ std::vector<Bitmap*> bitmapList;
 
 
 //비트맵 메타데이터 및 데이터 파일 로드
+
+#ifdef _WIN32
+
+#endif
+#ifdef __APPLE__
+
 void LoadBMP(const char * fileName) {
     FILE * f = fopen(fileName, "rb");
     unsigned char info[54];
@@ -47,6 +53,9 @@ void LoadBMP(const char * fileName) {
         printf("File Null");
     }
 }
+#endif
+
+
 
 Bitmap* GetBMP(const char * fileName) {
     for(int i=0; i<bitmapList.size(); i++) {

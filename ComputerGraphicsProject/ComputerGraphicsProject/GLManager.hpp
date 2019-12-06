@@ -16,7 +16,11 @@
 #include <iostream>
 #include <stdio.h>
 #include <vector>
+
+#ifdef __APPLE__
 #include <unistd.h>
+#endif
+
 #include <cmath>
 
 #include <GLUT/GLUT.h>

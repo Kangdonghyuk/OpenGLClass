@@ -13,9 +13,10 @@ GLManager glMNG;
 
 int main(int argc, char * argv[]) {
     
+#ifdef __APPLE__
     //맥 XCode로 실행시 파일 접근 경로가 달라 수동으로 접근 절대 경로를 설정
     chdir("/Users/liunx/Desktop/backup/computerGraphics/lab/ComputerGraphicsProject/ComputerGraphicsProject/");
-    
+#endif
     glMNG.Init(&argc, argv);
     
     glMNG.Loop();
